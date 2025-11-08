@@ -1,13 +1,13 @@
 import Matter from "matter-js";
-import type { AntigravityMatterProps } from "@/lib/types";
-import type { AntigravityMatterResult } from "../types/antigravity";
+import type { MatterCanvasResult } from "@/lib/types";
+import type { AntigravityMatterProps } from "./type";
 
 export const antigravityMatter = ({
   slopeRef,
   groundRef,
   boxRef,
   pinsRef,
-}: AntigravityMatterProps): AntigravityMatterResult => {
+}: AntigravityMatterProps): MatterCanvasResult => {
   // 30度の斜面を作成（左側に配置）
   const slopeAngle = (30 * Math.PI) / 180; // 30度をラジアンに変換
   const slopeLength = 400;

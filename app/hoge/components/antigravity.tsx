@@ -11,31 +11,6 @@ import { antigravityMatter } from "../lib/matter";
 type GravityMode = "-" | "0" | "+";
 type FrictionMode = "-" | "0" | "+";
 
-// ===================== utils =====================
-// 重力加速度の値を取得
-const getGravityValue = (mode: GravityMode): number => {
-  switch (mode) {
-    case "-":
-      return -1; // 逆重力
-    case "0":
-      return 0; // 重力なし
-    case "+":
-      return 1; // 通常重力
-  }
-};
-
-// 摩擦係数の値を取得
-const getFrictionValue = (mode: FrictionMode): number => {
-  switch (mode) {
-    case "-":
-      return -0.5; // 負の摩擦
-    case "0":
-      return 0; // 摩擦なし
-    case "+":
-      return 0.5; // 正の摩擦
-  }
-};
-
 const AntiGravity: React.FC<{ title: string }> = ({ title }) => {
   const [isFalling, setIsFalling] = useState(false);
   const [gravityMode, setGravityMode] = useState<GravityMode>("0");
@@ -262,6 +237,31 @@ const AntiGravity: React.FC<{ title: string }> = ({ title }) => {
       </div>
     </PhysicsContainer>
   );
+};
+
+// ===================== utils =====================
+// 重力加速度の値を取得
+const getGravityValue = (mode: GravityMode): number => {
+  switch (mode) {
+    case "-":
+      return -1; // 逆重力
+    case "0":
+      return 0; // 重力なし
+    case "+":
+      return 1; // 通常重力
+  }
+};
+
+// 摩擦係数の値を取得
+const getFrictionValue = (mode: FrictionMode): number => {
+  switch (mode) {
+    case "-":
+      return -0.5; // 負の摩擦
+    case "0":
+      return 0; // 摩擦なし
+    case "+":
+      return 0.5; // 正の摩擦
+  }
 };
 
 export default AntiGravity;
