@@ -1,6 +1,12 @@
 import Matter from "matter-js";
 import type { MatterCanvasResult } from "@/lib/types";
-import type { AntigravityMatterProps } from "./type";
+
+interface AntigravityMatterProps {
+  slopeRef: React.RefObject<Matter.Body | null>;
+  groundRef: React.RefObject<Matter.Body | null>;
+  boxRef: React.RefObject<Matter.Body | null>;
+  pinsRef: React.RefObject<Matter.Body[]>;
+}
 
 export const antigravityMatter = ({
   slopeRef,
