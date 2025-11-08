@@ -5,6 +5,7 @@ import type React from "react";
 import { useCallback, useRef, useState } from "react";
 import { PhysicsContainer } from "@/components/physics/Container";
 import { ParamsButton } from "@/components/physics/ParamsButton";
+import { Card, CardContent } from "@/components/ui/card";
 import { useMatterCanvas } from "@/lib/useMatterCanvas";
 import { antigravityMatter } from "../lib/matter";
 
@@ -117,59 +118,73 @@ const AntiGravity: React.FC<{ title: string }> = ({ title }) => {
       canvasRef={canvasRef}
     >
       {/* パラメータ選択UI */}
-      <div className="mb-6 bg-gray-800 p-6 rounded-lg shadow-lg">
-        <div className="grid grid-cols-2 gap-6">
-          {/* 重力加速度選択 */}
-          <div>
-            <h3 className="text-white font-bold mb-3 text-lg">重力加速度</h3>
-            <div className="flex gap-2">
-              <ParamsButton
-                label="- (逆)"
-                isSelected={gravityMode === "-"}
-                onClick={() => setGravityMode("-")}
-                disabled={isFalling}
-              />
-              <ParamsButton
-                label="0 (無)"
-                isSelected={gravityMode === "0"}
-                onClick={() => setGravityMode("0")}
-                disabled={isFalling}
-              />
-              <ParamsButton
-                label="+ (通常)"
-                isSelected={gravityMode === "+"}
-                onClick={() => setGravityMode("+")}
-                disabled={isFalling}
-              />
+      <Card className="w-full max-w-4xl">
+        <CardContent className="p-8">
+          <div className="grid md:grid-cols-2 gap-8">
+            {/* 重力加速度選択 */}
+            <div className="space-y-4">
+              <div>
+                <h3 className="text-lg font-bold text-white mb-1 flex items-center gap-2">
+                  <span className="text-cyan-400">⚡</span>
+                  重力加速度
+                </h3>
+                <p className="text-xs text-slate-400">物体に働く重力の方向と大きさ</p>
+              </div>
+              <div className="flex gap-2 flex-wrap">
+                <ParamsButton
+                  label="- (逆)"
+                  isSelected={gravityMode === "-"}
+                  onClick={() => setGravityMode("-")}
+                  disabled={isFalling}
+                />
+                <ParamsButton
+                  label="0 (無)"
+                  isSelected={gravityMode === "0"}
+                  onClick={() => setGravityMode("0")}
+                  disabled={isFalling}
+                />
+                <ParamsButton
+                  label="+ (通常)"
+                  isSelected={gravityMode === "+"}
+                  onClick={() => setGravityMode("+")}
+                  disabled={isFalling}
+                />
+              </div>
             </div>
-          </div>
 
-          {/* 摩擦係数選択 */}
-          <div>
-            <h3 className="text-white font-bold mb-3 text-lg">摩擦係数</h3>
-            <div className="flex gap-2">
-              <ParamsButton
-                label="- (負)"
-                isSelected={frictionMode === "-"}
-                onClick={() => setFrictionMode("-")}
-                disabled={isFalling}
-              />
-              <ParamsButton
-                label="0 (無)"
-                isSelected={frictionMode === "0"}
-                onClick={() => setFrictionMode("0")}
-                disabled={isFalling}
-              />
-              <ParamsButton
-                label="+ (正)"
-                isSelected={frictionMode === "+"}
-                onClick={() => setFrictionMode("+")}
-                disabled={isFalling}
-              />
+            {/* 摩擦係数選択 */}
+            <div className="space-y-4">
+              <div>
+                <h3 className="text-lg font-bold text-white mb-1 flex items-center gap-2">
+                  <span className="text-cyan-400">🔥</span>
+                  摩擦係数
+                </h3>
+                <p className="text-xs text-slate-400">表面の滑りやすさを決定</p>
+              </div>
+              <div className="flex gap-2 flex-wrap">
+                <ParamsButton
+                  label="- (負)"
+                  isSelected={frictionMode === "-"}
+                  onClick={() => setFrictionMode("-")}
+                  disabled={isFalling}
+                />
+                <ParamsButton
+                  label="0 (無)"
+                  isSelected={frictionMode === "0"}
+                  onClick={() => setFrictionMode("0")}
+                  disabled={isFalling}
+                />
+                <ParamsButton
+                  label="+ (正)"
+                  isSelected={frictionMode === "+"}
+                  onClick={() => setFrictionMode("+")}
+                  disabled={isFalling}
+                />
+              </div>
             </div>
           </div>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
     </PhysicsContainer>
   );
 };

@@ -1,25 +1,33 @@
+import { Button } from "@/components/ui/button";
+import { PlayCircle, RotateCcw } from "lucide-react";
+
 export const ExecuteContainer: React.FC<{
   onTry: () => void;
   onReset: () => void;
   isFalling: boolean;
 }> = ({ onTry, onReset, isFalling }) => {
   return (
-    <div className="mt-4 flex gap-4">
-      <button
+    <div className="mt-8 flex gap-4">
+      <Button
         type="button"
         onClick={onTry}
         disabled={isFalling}
-        className="px-8 py-3 bg-red-600 hover:bg-red-700 disabled:bg-gray-600 disabled:cursor-not-allowed text-white font-bold rounded-lg transition-colors text-lg"
+        size="lg"
+        className="group"
       >
+        <PlayCircle className="w-5 h-5 transition-transform group-hover:scale-110" />
         Try！
-      </button>
-      <button
+      </Button>
+      <Button
         type="button"
         onClick={onReset}
-        className="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg transition-colors text-lg"
+        variant="outline"
+        size="lg"
+        className="group"
       >
+        <RotateCcw className="w-5 h-5 transition-transform group-hover:rotate-180 duration-500" />
         リセット
-      </button>
+      </Button>
     </div>
   );
 };
