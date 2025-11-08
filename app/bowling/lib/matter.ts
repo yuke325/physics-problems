@@ -9,111 +9,122 @@ interface AntigravityMatterProps {
 }
 
 export const initializeAntigravityMatter = () => {
-  // 30度の斜面を作成（左側に配置）
-  const slopeAngle = (30 * Math.PI) / 180; // 30度をラジアンに変換
-  const slopeLength = 400;
-  const slopeHeight = 40;
+  // --- 地面の設計 ---
+  const ground = Matter.Bodies.rectangle(600, 790, 1220, 20, {
+    isStatic: true,
+    friction: 0.8,
+    render: { fillStyle: "rgba(100, 100, 100, 0.8)" },
+  });
 
+  // --- レーンの設計 (静的ボディを組み合わせる) ---
+  const laneHeight = 20;
+  const laneRender = {
+    fillStyle: "rgba(6, 182, 212, 0.8)",
+    strokeStyle: "#22d3ee",
+    lineWidth: 2,
+  };
+
+  // 1. 斜面部分
+  const slopeAngle = (20 * Math.PI) / 180;
+  const slopeWidth = 600;
+  const slopeStart = { x: 150, y: 400 };
   const slope = Matter.Bodies.rectangle(
-    200, // x座標（左側に移動）
-    450, // y座標
-    slopeLength, // 幅
-    slopeHeight, // 高さ
+    slopeStart.x + (slopeWidth / 2) * Math.cos(slopeAngle),
+    slopeStart.y + (slopeWidth / 2) * Math.sin(slopeAngle),
+    slopeWidth,
+    laneHeight,
     {
-      isStatic: true, // 静的オブジェクト（動かない）
-      angle: slopeAngle, // 30度傾ける
-      friction: 0.8, // 摩擦係数を設定
-      render: {
-        fillStyle: "rgba(6, 182, 212, 0.8)",
-        strokeStyle: "#22d3ee",
-        lineWidth: 2,
-      },
+      isStatic: true,
+      angle: slopeAngle,
+      friction: 0.8,
+      render: laneRender,
     },
   );
 
-  // 斜面の右端の座標を計算
-  const slopeEndX = 200 + (slopeLength / 2) * Math.cos(slopeAngle);
-  const slopeEndY =
-    450 + (slopeLength / 2) * Math.sin(slopeAngle) + slopeHeight / 2;
-
-  // 平面の地面を作成（斜面の右端に接続）
-  const groundWidth = 400;
-  const ground = Matter.Bodies.rectangle(
-    slopeEndX + groundWidth / 2, // 斜面の右端から始まる
-    slopeEndY + slopeHeight / 2, // 斜面の下端と同じ高さ
-    groundWidth,
-    40,
+  // 2. 水平部分
+  const horizontalWidth = 500;
+  // 斜面の終点を計算
+  const slopeEndX = slope.position.x + (slopeWidth / 2) * Math.cos(slopeAngle);
+  const slopeEndY = slope.position.y + (slopeWidth / 2) * Math.sin(slopeAngle);
+  // 水平レーンの始点を斜面の終点に合わせる
+  const horizontalLane = Matter.Bodies.rectangle(
+    slopeEndX + horizontalWidth / 2,
+    slopeEndY,
+    horizontalWidth,
+    laneHeight,
     {
       isStatic: true,
       friction: 0.8,
+      render: laneRender,
+    },
+  );
+
+  // --- 箱の設計 ---
+  const boxSize = 30;
+  // 斜面の始点近くの表面に箱を配置
+  const boxStartX =
+    slope.position.x - (slopeWidth / 2 - 50) * Math.cos(slopeAngle);
+  const boxStartY =
+    slope.position.y - (slopeWidth / 2 - 50) * Math.sin(slopeAngle);
+
+  const box = Matter.Bodies.rectangle(
+    boxStartX,
+    boxStartY - boxSize / 2,
+    boxSize,
+    boxSize,
+    {
+      angle: slopeAngle,
+      friction: 0.5,
+      frictionStatic: 0.8,
+      density: 0.02,
+      restitution: 0.1,
       render: {
-        fillStyle: "rgba(6, 182, 212, 0.8)",
-        strokeStyle: "#22d3ee",
-        lineWidth: 2,
+        fillStyle: "rgba(236, 72, 153, 0.9)",
+        strokeStyle: "#f9a8d4",
+        lineWidth: 3,
       },
     },
   );
 
-  // 四角い物体を作成（斜面上に配置）
-  // 斜面上の適切な位置を計算
-  const boxSize = 50;
-  // 斜面の上面に正確に配置するための計算
-  const slopeCenterX = 200;
-  const slopeCenterY = 450;
-  const distanceFromCenter = -150; // 斜面中心からの距離
-
-  // 斜面に沿った位置の計算
-  const boxX = slopeCenterX + distanceFromCenter * Math.cos(slopeAngle);
-  const boxY =
-    slopeCenterY +
-    distanceFromCenter * Math.sin(slopeAngle) -
-    (slopeHeight / 2 + boxSize / 2) * Math.cos(slopeAngle);
-
-  const box = Matter.Bodies.rectangle(boxX, boxY, boxSize, boxSize, {
-    angle: slopeAngle, // 斜面と同じ角度に傾ける
-    friction: 0.5, // 箱の摩擦係数
-    frictionStatic: 0.8, // 静止摩擦係数
-    density: 0.04, // 密度を上げて重くする
-    restitution: 0.3, // 反発係数
-    render: {
-      fillStyle: "rgba(236, 72, 153, 0.9)",
-      strokeStyle: "#f9a8d4",
-      lineWidth: 3,
-    },
-  });
-
-  // ボーリングピン風の物体を作成（地面上に配置）
+  // --- ピンの設計 ---
   const pins: Matter.Body[] = [];
-  const groundCenterX = slopeEndX + groundWidth / 2;
-  const groundTopY = slopeEndY + slopeHeight / 2 - 20; // 地面の上面
+  const pinWidth = 15;
+  const pinHeight = 40;
+  const pinSpacingX = 20;
+  const pinSpacingY = 40;
+  // 水平レーンの上にピンを配置
+  const pinStartX = horizontalLane.position.x - 20;
+  const pinStartY =
+    horizontalLane.position.y - laneHeight / 2 - pinHeight / 2 - 5;
 
   const pinPositions = [
-    // 1列目（1本）
-    { x: groundCenterX - 50, y: groundTopY - 30 },
-    // 2列目（2本）
-    { x: groundCenterX - 80, y: groundTopY - 60 },
-    { x: groundCenterX - 20, y: groundTopY - 60 },
-    // 3列目（3本）
-    { x: groundCenterX - 110, y: groundTopY - 90 },
-    { x: groundCenterX - 50, y: groundTopY - 90 },
-    { x: groundCenterX + 10, y: groundTopY - 90 },
-    // 4列目（4本）
-    { x: groundCenterX - 140, y: groundTopY - 120 },
-    { x: groundCenterX - 80, y: groundTopY - 120 },
-    { x: groundCenterX - 20, y: groundTopY - 120 },
-    { x: groundCenterX + 40, y: groundTopY - 120 },
-    // 5列目（5本）
-    { x: groundCenterX - 170, y: groundTopY - 150 },
-    { x: groundCenterX - 110, y: groundTopY - 150 },
-    { x: groundCenterX - 50, y: groundTopY - 150 },
-    { x: groundCenterX + 10, y: groundTopY - 150 },
-    { x: groundCenterX + 70, y: groundTopY - 150 },
+    { x: pinStartX, y: pinStartY },
+    { x: pinStartX + pinSpacingX, y: pinStartY },
+    { x: pinStartX + 2 * pinSpacingX, y: pinStartY },
+    { x: pinStartX + 3 * pinSpacingX, y: pinStartY },
+    { x: pinStartX + 4 * pinSpacingX, y: pinStartY },
+    { x: pinStartX + 5 * pinSpacingX, y: pinStartY },
+    { x: pinStartX + pinSpacingX / 2, y: pinStartY - pinSpacingY },
+    { x: pinStartX + 1.5 * pinSpacingX, y: pinStartY - pinSpacingY },
+    { x: pinStartX + 2.5 * pinSpacingX, y: pinStartY - pinSpacingY },
+    { x: pinStartX + 3.5 * pinSpacingX, y: pinStartY - pinSpacingY },
+    { x: pinStartX + 4.5 * pinSpacingX, y: pinStartY - pinSpacingY },
+    { x: pinStartX + 1 * pinSpacingX, y: pinStartY - 2 * pinSpacingY },
+    { x: pinStartX + 2 * pinSpacingX, y: pinStartY - 2 * pinSpacingY },
+    { x: pinStartX + 3 * pinSpacingX, y: pinStartY - 2 * pinSpacingY },
+    { x: pinStartX + 4 * pinSpacingX, y: pinStartY - 2 * pinSpacingY },
+    { x: pinStartX + 1.5 * pinSpacingX, y: pinStartY - 3 * pinSpacingY },
+    { x: pinStartX + 2.5 * pinSpacingX, y: pinStartY - 3 * pinSpacingY },
+    { x: pinStartX + 3.5 * pinSpacingX, y: pinStartY - 3 * pinSpacingY },
+    { x: pinStartX + 3 * pinSpacingX, y: pinStartY - 4 * pinSpacingY },
+    { x: pinStartX + 2 * pinSpacingX, y: pinStartY - 4 * pinSpacingY },
+    { x: pinStartX + 2.5 * pinSpacingX, y: pinStartY - 5 * pinSpacingY },
   ];
 
   pinPositions.forEach((pos) => {
-    const pin = Matter.Bodies.rectangle(pos.x, pos.y, 15, 50, {
+    const pin = Matter.Bodies.rectangle(pos.x, pos.y, pinWidth, pinHeight, {
       friction: 0.5,
-      density: 0.001,
+      density: 0.05,
       restitution: 0.5,
       render: {
         fillStyle: "rgba(251, 191, 36, 0.9)",
@@ -124,7 +135,10 @@ export const initializeAntigravityMatter = () => {
     pins.push(pin);
   });
 
-  return { slope, ground, box, pins };
+  // slopeRefには主要なレーンパーツ（斜面）を渡す
+  const laneForRef = slope;
+
+  return { ground, slope: laneForRef, horizontalLane, box, pins };
 };
 
 export const antigravityMatter = ({
@@ -133,11 +147,12 @@ export const antigravityMatter = ({
   boxRef,
   pinsRef,
 }: AntigravityMatterProps): MatterCanvasResult => {
-  const { slope, ground, box, pins } = initializeAntigravityMatter();
+  const { ground, slope, horizontalLane, box, pins } =
+    initializeAntigravityMatter();
   slopeRef.current = slope;
-  groundRef.current = ground;
+  groundRef.current = ground; // groundRefも正しく設定
   boxRef.current = box;
   pinsRef.current = pins;
 
-  return [slope, ground, box, ...pins];
+  return [ground, slope, horizontalLane, box, ...pins];
 };

@@ -11,7 +11,7 @@ import { fireBall, projectileMotionMatter } from "../lib/matter";
 const ProjectileMotion: React.FC<{ title: string }> = ({ title }) => {
   const [isFired, setIsFired] = useState(false);
   const [angle, setAngle] = useState(45); // 初期角度 45度
-  const [speed, setSpeed] = useState(25); // 初期速度 25
+  const [speed, setSpeed] = useState(120); // 初期速度 120
   const [airResistance, setAirResistance] = useState(false); // 空気抵抗
 
   const ballRef = useRef<Matter.Body | null>(null);
@@ -107,7 +107,7 @@ const ProjectileMotion: React.FC<{ title: string }> = ({ title }) => {
           <input
             type="range"
             min="100"
-            max="150"
+            max="200"
             value={speed}
             onChange={(e) => setSpeed(Number(e.target.value))}
             disabled={isFired}

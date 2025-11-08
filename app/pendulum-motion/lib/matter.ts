@@ -13,14 +13,14 @@ interface PendulumWaveMatterProps {
 
 // ペンデュラムウェーブを生成する関数
 export const initializePendulumWave = (numPendulums: number) => {
-  const worldWidth = 800;
+  const worldWidth = 1200;
   const pendulums = [];
   // 振り子間のスペースを動的に計算
   const spacing = worldWidth / (numPendulums + 1);
   const bobRadius = Math.max(5, Math.min(15, spacing / 2.5)); // おもりの半径も動的に
 
   const maxOscillations = 50; // 最長の振り子が完了する振動の数
-  const baseLength = 400; // 最長の振り子の基準長
+  const baseLength = 600; // 最長の振り子の基準長
 
   // 衝突しないように、すべての振り子を同じ負のグループに入れる
   const collisionGroup = -1;
@@ -30,7 +30,7 @@ export const initializePendulumWave = (numPendulums: number) => {
     const length = baseLength * (maxOscillations / oscillations) ** 2;
 
     const anchorX = (i + 1) * spacing;
-    const anchor = { x: anchorX, y: 100 };
+    const anchor = { x: anchorX, y: 50 };
 
     const bob = Matter.Bodies.circle(anchor.x, anchor.y + length, bobRadius, {
       density: 0.04,

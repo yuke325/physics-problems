@@ -30,7 +30,10 @@ const RollingMaterial: React.FC<{ title: string }> = ({ title }) => {
     [],
   );
 
-  const { canvasRef, engineRef } = useMatterCanvas(initializeScene);
+  const { canvasRef, engineRef } = useMatterCanvas(initializeScene, {
+    width: 1200,
+    height: 800,
+  });
 
   const handleTry = () => {
     if (circleRef.current && engineRef.current && !isFalling) {
