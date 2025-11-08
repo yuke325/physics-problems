@@ -10,6 +10,7 @@ interface AntigravityMatterProps {
 
 export const initializeAntigravityMatter = () => {
   // --- 地面の設計 ---
+  const groundWidth = 600;
   const ground = Matter.Bodies.rectangle(600, 790, 1220, 20, {
     isStatic: true,
     friction: 0.8,
@@ -28,9 +29,10 @@ export const initializeAntigravityMatter = () => {
   const slopeAngle = (20 * Math.PI) / 180;
   const slopeWidth = 600;
   const slopeStart = { x: 150, y: 400 };
+  const slopeHeight = slopeStart.y + (slopeWidth / 2) * Math.sin(slopeAngle);
   const slope = Matter.Bodies.rectangle(
     slopeStart.x + (slopeWidth / 2) * Math.cos(slopeAngle),
-    slopeStart.y + (slopeWidth / 2) * Math.sin(slopeAngle),
+    slopeHeight,
     slopeWidth,
     laneHeight,
     {
@@ -60,18 +62,17 @@ export const initializeAntigravityMatter = () => {
   );
 
   // --- 箱の設計 ---
-  const boxSize = 30;
+  const circleSize = 20;
   // 斜面の始点近くの表面に箱を配置
-  const boxStartX =
+  const circleStartX =
     slope.position.x - (slopeWidth / 2 - 50) * Math.cos(slopeAngle);
-  const boxStartY =
+  const circleStartY =
     slope.position.y - (slopeWidth / 2 - 50) * Math.sin(slopeAngle);
 
-  const box = Matter.Bodies.rectangle(
-    boxStartX,
-    boxStartY - boxSize / 2,
-    boxSize,
-    boxSize,
+  const circle = Matter.Bodies.circle(
+    circleStartX,
+    circleStartY - circleSize / 2,
+    circleSize,
     {
       angle: slopeAngle,
       friction: 0.5,
@@ -88,43 +89,40 @@ export const initializeAntigravityMatter = () => {
 
   // --- ピンの設計 ---
   const pins: Matter.Body[] = [];
-  const pinWidth = 15;
-  const pinHeight = 40;
-  const pinSpacingX = 20;
-  const pinSpacingY = 40;
-  // 水平レーンの上にピンを配置
-  const pinStartX = horizontalLane.position.x - 20;
-  const pinStartY =
-    horizontalLane.position.y - laneHeight / 2 - pinHeight / 2 - 5;
+  const pinWidth = 25;
+  const pinHeight = 45;
+
+  const groundCenterX = slopeEndX + groundWidth / 2;
+  const groundTopY = slopeEndY - 20; // 地面の上面
 
   const pinPositions = [
-    { x: pinStartX, y: pinStartY },
-    { x: pinStartX + pinSpacingX, y: pinStartY },
-    { x: pinStartX + 2 * pinSpacingX, y: pinStartY },
-    { x: pinStartX + 3 * pinSpacingX, y: pinStartY },
-    { x: pinStartX + 4 * pinSpacingX, y: pinStartY },
-    { x: pinStartX + 5 * pinSpacingX, y: pinStartY },
-    { x: pinStartX + pinSpacingX / 2, y: pinStartY - pinSpacingY },
-    { x: pinStartX + 1.5 * pinSpacingX, y: pinStartY - pinSpacingY },
-    { x: pinStartX + 2.5 * pinSpacingX, y: pinStartY - pinSpacingY },
-    { x: pinStartX + 3.5 * pinSpacingX, y: pinStartY - pinSpacingY },
-    { x: pinStartX + 4.5 * pinSpacingX, y: pinStartY - pinSpacingY },
-    { x: pinStartX + 1 * pinSpacingX, y: pinStartY - 2 * pinSpacingY },
-    { x: pinStartX + 2 * pinSpacingX, y: pinStartY - 2 * pinSpacingY },
-    { x: pinStartX + 3 * pinSpacingX, y: pinStartY - 2 * pinSpacingY },
-    { x: pinStartX + 4 * pinSpacingX, y: pinStartY - 2 * pinSpacingY },
-    { x: pinStartX + 1.5 * pinSpacingX, y: pinStartY - 3 * pinSpacingY },
-    { x: pinStartX + 2.5 * pinSpacingX, y: pinStartY - 3 * pinSpacingY },
-    { x: pinStartX + 3.5 * pinSpacingX, y: pinStartY - 3 * pinSpacingY },
-    { x: pinStartX + 3 * pinSpacingX, y: pinStartY - 4 * pinSpacingY },
-    { x: pinStartX + 2 * pinSpacingX, y: pinStartY - 4 * pinSpacingY },
-    { x: pinStartX + 2.5 * pinSpacingX, y: pinStartY - 5 * pinSpacingY },
+    // 1列目（1本）
+    { x: groundCenterX - 50, y: groundTopY - 192 },
+    // 2列目（2本）
+    { x: groundCenterX - 65, y: groundTopY - 149 },
+    { x: groundCenterX - 35, y: groundTopY - 149 },
+    // 3列目（3本）
+    { x: groundCenterX - 80, y: groundTopY - 103 },
+    { x: groundCenterX - 50, y: groundTopY - 103 },
+    { x: groundCenterX - 20, y: groundTopY - 103 },
+    // 4列目（4本）
+    { x: groundCenterX - 95, y: groundTopY - 59 },
+    { x: groundCenterX - 65, y: groundTopY - 59 },
+    { x: groundCenterX - 35, y: groundTopY - 59 },
+    { x: groundCenterX - 5, y: groundTopY - 59 },
+    // 5列目（5本）
+    { x: groundCenterX - 110, y: groundTopY },
+    { x: groundCenterX - 80, y: groundTopY },
+    { x: groundCenterX - 50, y: groundTopY },
+    { x: groundCenterX - 20, y: groundTopY },
+    { x: groundCenterX + 10, y: groundTopY },
   ];
 
   pinPositions.forEach((pos) => {
     const pin = Matter.Bodies.rectangle(pos.x, pos.y, pinWidth, pinHeight, {
       friction: 0.5,
-      density: 0.05,
+      frictionStatic: 0.8,
+      density: 0.001,
       restitution: 0.5,
       render: {
         fillStyle: "rgba(251, 191, 36, 0.9)",
@@ -138,7 +136,7 @@ export const initializeAntigravityMatter = () => {
   // slopeRefには主要なレーンパーツ（斜面）を渡す
   const laneForRef = slope;
 
-  return { ground, slope: laneForRef, horizontalLane, box, pins };
+  return { ground, slope: laneForRef, horizontalLane, box: circle, pins };
 };
 
 export const antigravityMatter = ({
