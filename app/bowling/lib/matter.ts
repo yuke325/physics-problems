@@ -8,12 +8,7 @@ interface AntigravityMatterProps {
   pinsRef: React.RefObject<Matter.Body[]>;
 }
 
-export const antigravityMatter = ({
-  slopeRef,
-  groundRef,
-  boxRef,
-  pinsRef,
-}: AntigravityMatterProps): MatterCanvasResult => {
+export const initializeAntigravityMatter = () => {
   // 30度の斜面を作成（左側に配置）
   const slopeAngle = (30 * Math.PI) / 180; // 30度をラジアンに変換
   const slopeLength = 400;
@@ -33,7 +28,6 @@ export const antigravityMatter = ({
       },
     },
   );
-  slopeRef.current = slope;
 
   // 斜面の右端の座標を計算
   const slopeEndX = 200 + (slopeLength / 2) * Math.cos(slopeAngle);
@@ -55,7 +49,6 @@ export const antigravityMatter = ({
       },
     },
   );
-  groundRef.current = ground;
 
   // 四角い物体を作成（斜面上に配置）
   // 斜面上の適切な位置を計算
@@ -82,8 +75,6 @@ export const antigravityMatter = ({
       fillStyle: "#e74c3c",
     },
   });
-
-  boxRef.current = box;
 
   // ボーリングピン風の物体を作成（地面上に配置）
   const pins: Matter.Body[] = [];
@@ -125,6 +116,19 @@ export const antigravityMatter = ({
     pins.push(pin);
   });
 
+  return { slope, ground, box, pins };
+};
+
+export const antigravityMatter = ({
+  slopeRef,
+  groundRef,
+  boxRef,
+  pinsRef,
+}: AntigravityMatterProps): MatterCanvasResult => {
+  const { slope, ground, box, pins } = initializeAntigravityMatter();
+  slopeRef.current = slope;
+  groundRef.current = ground;
+  boxRef.current = box;
   pinsRef.current = pins;
 
   return [slope, ground, box, ...pins];

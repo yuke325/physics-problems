@@ -1,3 +1,5 @@
+"use client";
+
 import Matter from "matter-js";
 import { useEffect, useRef } from "react";
 import type { MatterCanvasResult } from "./types";
@@ -11,52 +13,67 @@ export const useMatterCanvas = (func: HooksProps) => {
   const runnerRef = useRef<Matter.Runner | null>(null);
 
   useEffect(() => {
-    if (!canvasRef.current) return;
+    let disposed = false;
+    let animationFrame: number | null = null;
 
-    // エンジンの作成（最初は重力なし）
-    const engine = Matter.Engine.create({
-      gravity: { x: 0, y: 0 },
-    });
-    engineRef.current = engine;
+    const initialize = () => {
+      if (disposed) return;
 
-    // レンダラーの作成
-    const render = Matter.Render.create({
-      canvas: canvasRef.current,
-      engine: engine,
-      options: {
-        width: 800,
-        height: 600,
-        wireframes: false,
-        background: "#0f0f23",
-      },
-    });
-    renderRef.current = render;
+      const canvas = canvasRef.current;
 
-    // 物体の作成
-    const custom = func();
-    // ワールドに追加
-    Matter.Composite.add(engine.world, custom);
+      if (!canvas) {
+        animationFrame = requestAnimationFrame(initialize);
+        return;
+      }
 
-    // レンダラーを実行
-    Matter.Render.run(render);
+      const engine = Matter.Engine.create({
+        gravity: { x: 0, y: 0 },
+      });
+      engineRef.current = engine;
 
-    // エンジンを実行
-    const runner = Matter.Runner.create();
-    runnerRef.current = runner;
-    Matter.Runner.run(runner, engine);
+      const render = Matter.Render.create({
+        canvas,
+        engine,
+        options: {
+          width: 800,
+          height: 600,
+          wireframes: false,
+          background: "#0f0f23",
+        },
+      });
+      renderRef.current = render;
 
-    // クリーンアップ関数
+      const custom = func();
+      Matter.Composite.add(engine.world, custom);
+
+      Matter.Render.run(render);
+
+      const runner = Matter.Runner.create();
+      runnerRef.current = runner;
+      Matter.Runner.run(runner, engine);
+    };
+
+    initialize();
+
     return () => {
+      disposed = true;
+      if (animationFrame) {
+        cancelAnimationFrame(animationFrame);
+      }
       if (renderRef.current) {
         Matter.Render.stop(renderRef.current);
-        renderRef.current.canvas.remove();
+        renderRef.current = null;
       }
-      if (runnerRef.current && engineRef.current) {
+      if (runnerRef.current) {
         Matter.Runner.stop(runnerRef.current);
+        runnerRef.current = null;
+      }
+      if (engineRef.current) {
         Matter.Engine.clear(engineRef.current);
+        engineRef.current = null;
       }
     };
-  }, []);
+  }, [func]);
 
   return {
     canvasRef,

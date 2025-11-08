@@ -2,7 +2,7 @@
 
 import Matter from "matter-js";
 import type React from "react";
-import { useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { PhysicsContainer } from "@/components/physics/Container";
 import { ParamsButton } from "@/components/physics/ParamsButton";
 import { useMatterCanvas } from "@/lib/useMatterCanvas";
@@ -21,12 +21,16 @@ const RollingMaterial: React.FC<{ title: string }> = ({ title }) => {
   const slopeRef = useRef<Matter.Body | null>(null);
   const circleRef = useRef<Matter.Body | null>(null);
 
-  const { canvasRef, engineRef } = useMatterCanvas(() =>
-    rollingMaterialMatter({
-      slopeRef,
-      circleRef,
-    }),
+  const initializeScene = useCallback(
+    () =>
+      rollingMaterialMatter({
+        slopeRef,
+        circleRef,
+      }),
+    [],
   );
+
+  const { canvasRef, engineRef } = useMatterCanvas(initializeScene);
 
   // Try！ボタン - 選択した設定で実行
   const handleTry = () => {
@@ -65,14 +69,15 @@ const RollingMaterial: React.FC<{ title: string }> = ({ title }) => {
   // 物体をリセットする関数
   const handleReset = () => {
     if (engineRef.current && circleRef.current) {
+      const engine = engineRef.current;
       // 重力をゼロに戻す
-      engineRef.current.gravity.y = 0;
+      engine.gravity.y = 0;
 
-      Matter.Composite.remove(engineRef.current.world, circleRef.current);
+      Matter.Composite.remove(engine.world, circleRef.current);
 
       const custom = rollingMaterialMatter({ slopeRef, circleRef });
 
-      Matter.Composite.add(engineRef.current.world, custom);
+      Matter.Composite.add(engine.world, custom);
       setIsFalling(false);
     }
   };

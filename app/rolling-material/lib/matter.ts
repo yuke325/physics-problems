@@ -6,7 +6,7 @@ interface RollingMaterialMatterProps {
   circleRef: React.RefObject<Matter.Body | null>;
 }
 
-export const initializePosition = () => {
+export const initializeRollingMaterial = () => {
   // 30度の斜面を作成（左側に配置）
   const slopeAngle = (30 * Math.PI) / 180; // 30度をラジアンに変換
   const slopeLength = 800;
@@ -60,7 +60,7 @@ export const rollingMaterialMatter = ({
   slopeRef,
   circleRef,
 }: RollingMaterialMatterProps): MatterCanvasResult => {
-  const { slope, circle } = initializePosition();
+  const { slope, circle } = initializeRollingMaterial();
   slopeRef.current = slope;
   circleRef.current = circle;
 

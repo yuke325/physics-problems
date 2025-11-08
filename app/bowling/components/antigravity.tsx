@@ -2,7 +2,7 @@
 
 import Matter from "matter-js";
 import type React from "react";
-import { useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { PhysicsContainer } from "@/components/physics/Container";
 import { ParamsButton } from "@/components/physics/ParamsButton";
 import { useMatterCanvas } from "@/lib/useMatterCanvas";
@@ -21,14 +21,18 @@ const AntiGravity: React.FC<{ title: string }> = ({ title }) => {
   const boxRef = useRef<Matter.Body | null>(null);
   const pinsRef = useRef<Matter.Body[]>([]);
 
-  const { canvasRef, engineRef } = useMatterCanvas(() =>
-    antigravityMatter({
-      slopeRef,
-      groundRef,
-      boxRef,
-      pinsRef,
-    }),
+  const initializeScene = useCallback(
+    () =>
+      antigravityMatter({
+        slopeRef,
+        groundRef,
+        boxRef,
+        pinsRef,
+      }),
+    [],
   );
+
+  const { canvasRef, engineRef } = useMatterCanvas(initializeScene);
 
   // Try！ボタン - 選択した設定で実行
   const handleTry = () => {
@@ -82,93 +86,24 @@ const AntiGravity: React.FC<{ title: string }> = ({ title }) => {
   // 物体をリセットする関数
   const handleReset = () => {
     if (engineRef.current && boxRef.current) {
+      const engine = engineRef.current;
       // 重力をゼロに戻す
-      engineRef.current.gravity.y = 0;
+      engine.gravity.y = 0;
 
       // 古い物体とピンを削除
-      Matter.Composite.remove(engineRef.current.world, boxRef.current);
+      Matter.Composite.remove(engine.world, boxRef.current);
       pinsRef.current.forEach((pin) => {
-        Matter.Composite.remove(engineRef.current!.world, pin);
+        Matter.Composite.remove(engine.world, pin);
       });
 
-      // 新しい物体を初期位置に再作成
-      const slopeAngle = (30 * Math.PI) / 180;
-      const boxSize = 50;
-      const slopeCenterX = 200;
-      const slopeCenterY = 450;
-      const distanceFromCenter = -150;
-      const slopeHeight = 40;
-
-      const boxX = slopeCenterX + distanceFromCenter * Math.cos(slopeAngle);
-      const boxY =
-        slopeCenterY +
-        distanceFromCenter * Math.sin(slopeAngle) -
-        (slopeHeight / 2 + boxSize / 2) * Math.cos(slopeAngle);
-
-      const newBox = Matter.Bodies.rectangle(boxX, boxY, boxSize, boxSize, {
-        angle: slopeAngle,
-        friction: 0.5,
-        frictionStatic: 0.8,
-        density: 0.004,
-        restitution: 0.3,
-        render: {
-          fillStyle: "#e74c3c",
-        },
+      const custom = antigravityMatter({
+        slopeRef,
+        groundRef,
+        boxRef,
+        pinsRef,
       });
 
-      // 速度と角速度を完全にゼロにリセット
-      Matter.Body.setVelocity(newBox, { x: 0, y: 0 });
-      Matter.Body.setAngularVelocity(newBox, 0);
-      Matter.Body.setPosition(newBox, { x: boxX, y: boxY });
-
-      boxRef.current = newBox;
-
-      // ピンを再作成
-      const slopeEndX = 200 + (400 / 2) * Math.cos(slopeAngle);
-      const slopeEndY = 450 + (400 / 2) * Math.sin(slopeAngle) + 40 / 2;
-      const groundWidth = 400;
-      const groundCenterX = slopeEndX + groundWidth / 2;
-      const groundTopY = slopeEndY + 40 / 2 - 20;
-
-      const pins: Matter.Body[] = [];
-      const pinPositions = [
-        // 1列目（1本）
-        { x: groundCenterX - 50, y: groundTopY - 30 },
-        // 2列目（2本）
-        { x: groundCenterX - 80, y: groundTopY - 60 },
-        { x: groundCenterX - 20, y: groundTopY - 60 },
-        // 3列目（3本）
-        { x: groundCenterX - 110, y: groundTopY - 90 },
-        { x: groundCenterX - 50, y: groundTopY - 90 },
-        { x: groundCenterX + 10, y: groundTopY - 90 },
-        // 4列目（4本）
-        { x: groundCenterX - 140, y: groundTopY - 120 },
-        { x: groundCenterX - 80, y: groundTopY - 120 },
-        { x: groundCenterX - 20, y: groundTopY - 120 },
-        { x: groundCenterX + 40, y: groundTopY - 120 },
-        // 5列目（5本）
-        { x: groundCenterX - 170, y: groundTopY - 150 },
-        { x: groundCenterX - 110, y: groundTopY - 150 },
-        { x: groundCenterX - 50, y: groundTopY - 150 },
-        { x: groundCenterX + 10, y: groundTopY - 150 },
-        { x: groundCenterX + 70, y: groundTopY - 150 },
-      ];
-
-      pinPositions.forEach((pos) => {
-        const pin = Matter.Bodies.rectangle(pos.x, pos.y, 15, 50, {
-          friction: 0.5,
-          density: 0.001,
-          restitution: 0.5,
-          render: {
-            fillStyle: "#f39c12",
-          },
-        });
-        pins.push(pin);
-      });
-
-      pinsRef.current = pins;
-
-      Matter.Composite.add(engineRef.current.world, [newBox, ...pins]);
+      Matter.Composite.add(engine.world, custom);
       setIsFalling(false);
     }
   };
