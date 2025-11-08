@@ -9,6 +9,7 @@ type HooksProps = () => MatterCanvasResult;
 export const useMatterCanvas = (func: HooksProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const engineRef = useRef<Matter.Engine | null>(null);
+  const worldRef = useRef<Matter.World | null>(null);
   const renderRef = useRef<Matter.Render | null>(null);
   const runnerRef = useRef<Matter.Runner | null>(null);
 
@@ -30,6 +31,7 @@ export const useMatterCanvas = (func: HooksProps) => {
         gravity: { x: 0, y: 0 },
       });
       engineRef.current = engine;
+      worldRef.current = engine.world;
 
       const render = Matter.Render.create({
         canvas,
@@ -135,5 +137,6 @@ export const useMatterCanvas = (func: HooksProps) => {
   return {
     canvasRef,
     engineRef,
+    worldRef,
   };
 };

@@ -117,7 +117,6 @@ export const fireBall = (
     Matter.Body.setAngularVelocity(part, 0);
   });
 
-
   // 力を加える
   Matter.Body.applyForce(ball, ball.position, force);
 };

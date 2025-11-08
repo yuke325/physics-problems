@@ -5,7 +5,7 @@ import type React from "react";
 import { useCallback, useRef, useState } from "react";
 import { PhysicsContainer } from "@/components/physics/Container";
 import { useMatterCanvas } from "@/lib/useMatterCanvas";
-import { projectileMotionMatter, fireBall } from "../lib/matter";
+import { fireBall, projectileMotionMatter } from "../lib/matter";
 
 const ProjectileMotion: React.FC<{ title: string }> = ({ title }) => {
   const [isFired, setIsFired] = useState(false);
