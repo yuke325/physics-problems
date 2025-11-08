@@ -89,33 +89,33 @@ export const initializeAntigravityMatter = () => {
 
   // --- ピンの設計 ---
   const pins: Matter.Body[] = [];
-  const pinWidth = 25;
+  const pinWidth = 15;
   const pinHeight = 45;
 
   const groundCenterX = slopeEndX + groundWidth / 2;
   const groundTopY = slopeEndY - 20; // 地面の上面
 
   const pinPositions = [
-    // 1列目（1本）
-    { x: groundCenterX - 50, y: groundTopY - 192 },
-    // 2列目（2本）
-    { x: groundCenterX - 65, y: groundTopY - 149 },
-    { x: groundCenterX - 35, y: groundTopY - 149 },
-    // 3列目（3本）
-    { x: groundCenterX - 80, y: groundTopY - 103 },
-    { x: groundCenterX - 50, y: groundTopY - 103 },
-    { x: groundCenterX - 20, y: groundTopY - 103 },
-    // 4列目（4本）
-    { x: groundCenterX - 95, y: groundTopY - 59 },
-    { x: groundCenterX - 65, y: groundTopY - 59 },
-    { x: groundCenterX - 35, y: groundTopY - 59 },
-    { x: groundCenterX - 5, y: groundTopY - 59 },
-    // 5列目（5本）
+    // 5段目（1本）
+    { x: groundCenterX - 50, y: groundTopY - 150 },
+    // 4段目（2本）
+    { x: groundCenterX - 80, y: groundTopY - 100 },
+    { x: groundCenterX - 50, y: groundTopY - 100 },
+    { x: groundCenterX - 20, y: groundTopY - 100 },
+    // 3段目（5本）
+    { x: groundCenterX - 110, y: groundTopY - 60 },
+    { x: groundCenterX - 80, y: groundTopY - 60 },
+    { x: groundCenterX - 50, y: groundTopY - 60 },
+    { x: groundCenterX - 20, y: groundTopY - 60 },
+    { x: groundCenterX + 10, y: groundTopY - 60 },
+    // 2段目（7本）
+    { x: groundCenterX - 140, y: groundTopY },
     { x: groundCenterX - 110, y: groundTopY },
     { x: groundCenterX - 80, y: groundTopY },
     { x: groundCenterX - 50, y: groundTopY },
     { x: groundCenterX - 20, y: groundTopY },
     { x: groundCenterX + 10, y: groundTopY },
+    { x: groundCenterX + 40, y: groundTopY },
   ];
 
   pinPositions.forEach((pos) => {
