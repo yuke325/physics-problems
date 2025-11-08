@@ -1,5 +1,5 @@
-import { Button } from "@/components/ui/button";
 import { PlayCircle, RotateCcw } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { StatusIndicator } from "@/components/ui/status-indicator";
 
 export const ExecuteContainer: React.FC<{
@@ -9,11 +9,11 @@ export const ExecuteContainer: React.FC<{
 }> = ({ onTry, onReset, isFalling }) => {
   return (
     <div className="flex flex-col gap-4 w-full">
-      <StatusIndicator 
-        isActive={isFalling} 
-        label={isFalling ? "実行中" : "待機中"} 
+      <StatusIndicator
+        isActive={isFalling}
+        label={isFalling ? "実行中" : "待機中"}
       />
-      
+
       <div className="grid grid-cols-2 gap-3">
         <Button
           type="button"

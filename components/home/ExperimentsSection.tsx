@@ -1,8 +1,7 @@
-import Link from "next/link";
 import { ArrowRight, Star, Zap } from "lucide-react";
-
-import type { LabSummary } from "@/lib/labs";
+import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
+import type { LabSummary } from "@/lib/labs";
 
 type ExperimentsSectionProps = {
   labs: readonly LabSummary[];
@@ -54,7 +53,7 @@ export function ExperimentsSection({ labs }: ExperimentsSectionProps) {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <span className="text-xs font-mono text-slate-500">
-                    {String(idx + 1).padStart(2, '0')}
+                    {String(idx + 1).padStart(2, "0")}
                   </span>
                   <p className="text-xs font-bold uppercase tracking-[0.5em] text-slate-400">
                     {lab.code}
@@ -65,7 +64,7 @@ export function ExperimentsSection({ labs }: ExperimentsSectionProps) {
                   {lab.status}
                 </Badge>
               </div>
-              
+
               <div>
                 <h3 className="text-2xl font-bold text-white group-hover:text-cyan-300 transition-colors">
                   {lab.title}
@@ -74,7 +73,7 @@ export function ExperimentsSection({ labs }: ExperimentsSectionProps) {
                   {lab.description}
                 </p>
               </div>
-              
+
               <div className="flex flex-wrap gap-2">
                 {lab.tags.map((tag) => (
                   <Badge key={tag} variant="outline" className="text-xs">
@@ -82,7 +81,7 @@ export function ExperimentsSection({ labs }: ExperimentsSectionProps) {
                   </Badge>
                 ))}
               </div>
-              
+
               <div className="flex items-center gap-2 text-sm font-semibold text-cyan-400 pt-2">
                 詳細を見る
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-2" />

@@ -54,7 +54,7 @@ export const useMatterCanvas = (func: HooksProps) => {
 
         bodies.forEach((body) => {
           const { x, y } = body.position;
-          
+
           // Add shadow effect to all bodies
           context.save();
           context.shadowColor = "rgba(0, 0, 0, 0.5)";
@@ -67,12 +67,12 @@ export const useMatterCanvas = (func: HooksProps) => {
           if (!body.isStatic && body.speed > 0.5) {
             context.save();
             context.globalCompositeOperation = "lighter";
-            
+
             const gradient = context.createRadialGradient(x, y, 0, x, y, 40);
             gradient.addColorStop(0, "rgba(6, 182, 212, 0.4)");
             gradient.addColorStop(0.5, "rgba(6, 182, 212, 0.2)");
             gradient.addColorStop(1, "rgba(6, 182, 212, 0)");
-            
+
             context.fillStyle = gradient;
             context.beginPath();
             context.arc(x, y, 40, 0, Math.PI * 2);
@@ -83,18 +83,18 @@ export const useMatterCanvas = (func: HooksProps) => {
             if (body.speed > 2) {
               const velocity = body.velocity;
               const trailLength = Math.min(body.speed * 10, 50);
-              
+
               context.save();
               context.globalAlpha = 0.3;
               context.strokeStyle = "#06b6d4";
               context.lineWidth = 2;
               context.lineCap = "round";
-              
+
               context.beginPath();
               context.moveTo(x, y);
               context.lineTo(
-                x - velocity.x * trailLength / body.speed,
-                y - velocity.y * trailLength / body.speed
+                x - (velocity.x * trailLength) / body.speed,
+                y - (velocity.y * trailLength) / body.speed,
               );
               context.stroke();
               context.restore();

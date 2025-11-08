@@ -8,7 +8,7 @@ export default function Home() {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(59,130,246,0.15),transparent_50%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,rgba(139,92,246,0.15),transparent_50%)]" />
       </div>
-      
+
       <div className="relative z-10">
         <RollingMaterial title="物理シミュレーター - 斜面を転がる物体" />
       </div>

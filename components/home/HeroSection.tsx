@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { ArrowRight, Sparkles } from "lucide-react";
+import Link from "next/link";
 
 import type { Pathway } from "@/lib/pathways";
 
@@ -54,18 +54,24 @@ export function HeroSection({ pathways }: HeroSectionProps) {
         <div className="relative">
           <div className="flex items-center gap-2 mb-2">
             <div className="h-2 w-2 rounded-full bg-cyan-400 animate-pulse" />
-            <p className="text-sm font-semibold text-cyan-200 uppercase tracking-wider">Concept Log</p>
+            <p className="text-sm font-semibold text-cyan-200 uppercase tracking-wider">
+              Concept Log
+            </p>
           </div>
           <div className="mt-6 space-y-6">
             {pathways.map((item, idx) => (
               <div key={item.title} className="group/item">
                 <div className="flex items-start gap-3">
-                  <span className="mt-1 text-xs font-mono text-cyan-400/60">{String(idx + 1).padStart(2, '0')}</span>
+                  <span className="mt-1 text-xs font-mono text-cyan-400/60">
+                    {String(idx + 1).padStart(2, "0")}
+                  </span>
                   <div className="flex-1">
                     <h3 className="text-lg font-semibold text-white group-hover/item:text-cyan-300 transition-colors">
                       {item.title}
                     </h3>
-                    <p className="mt-2 text-sm text-slate-300 leading-relaxed">{item.body}</p>
+                    <p className="mt-2 text-sm text-slate-300 leading-relaxed">
+                      {item.body}
+                    </p>
                   </div>
                 </div>
                 {idx < pathways.length - 1 && (
