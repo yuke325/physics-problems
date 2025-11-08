@@ -5,7 +5,6 @@ import type React from "react";
 import { useCallback, useRef, useState } from "react";
 import { PhysicsContainer } from "@/components/physics/Container";
 import { ParamsButton } from "@/components/physics/ParamsButton";
-import { Card, CardContent } from "@/components/ui/card";
 import { useMatterCanvas } from "@/lib/useMatterCanvas";
 import { rollingMaterialMatter } from "../lib/matter";
 
@@ -33,29 +32,24 @@ const RollingMaterial: React.FC<{ title: string }> = ({ title }) => {
 
   const { canvasRef, engineRef } = useMatterCanvas(initializeScene);
 
-  // Try！ボタン - 選択した設定で実行
   const handleTry = () => {
     if (circleRef.current && engineRef.current && !isFalling) {
-      // 重力を設定
       engineRef.current.gravity.y = getGravityValue(gravityMode);
 
       const frictionValue = getFrictionValue(frictionMode);
       const densityValue = getDensityValue(densityMode);
 
-      // 物体の密度を設定
       Matter.Body.setDensity(circleRef.current, densityValue);
 
-      // 物体の摩擦係数を設定
       Matter.Body.set(circleRef.current, {
         friction: frictionValue,
         frictionStatic:
           frictionValue === 0
             ? 0
             : Math.abs(frictionValue) * 1.2 * Math.sign(frictionValue),
-        frictionAir: 0, // 空気抵抗も0に
+        frictionAir: 0,
       });
 
-      // 斜面の摩擦係数を設定
       if (slopeRef.current) {
         Matter.Body.set(slopeRef.current, {
           friction:
@@ -67,11 +61,9 @@ const RollingMaterial: React.FC<{ title: string }> = ({ title }) => {
     }
   };
 
-  // 物体をリセットする関数
   const handleReset = () => {
     if (engineRef.current && circleRef.current) {
       const engine = engineRef.current;
-      // 重力をゼロに戻す
       engine.gravity.y = 0;
 
       Matter.Composite.remove(engine.world, circleRef.current);
@@ -91,140 +83,126 @@ const RollingMaterial: React.FC<{ title: string }> = ({ title }) => {
       isFalling={isFalling}
       canvasRef={canvasRef}
     >
-      {/* パラメータ選択UI */}
-      <Card className="w-full max-w-5xl">
-        <CardContent className="p-8">
-          <div className="grid md:grid-cols-3 gap-8">
-            {/* 重力加速度選択 */}
-            <div className="space-y-4">
-              <div>
-                <h3 className="text-lg font-bold text-white mb-1 flex items-center gap-2">
-                  重力加速度
-                </h3>
-                <p className="text-xs text-slate-400">物体の落下速度を調整</p>
-              </div>
-              <div className="flex gap-2 flex-wrap">
-                <ParamsButton
-                  label="下げる"
-                  isSelected={gravityMode === "-"}
-                  onClick={() => setGravityMode("-")}
-                  disabled={isFalling}
-                />
-                <ParamsButton
-                  label="なし"
-                  isSelected={gravityMode === "0"}
-                  onClick={() => setGravityMode("0")}
-                  disabled={isFalling}
-                />
-                <ParamsButton
-                  label="上げる"
-                  isSelected={gravityMode === "+"}
-                  onClick={() => setGravityMode("+")}
-                  disabled={isFalling}
-                />
-              </div>
-            </div>
+      <div className="space-y-3">
+        <div>
+          <h3 className="text-base font-bold text-white mb-1 flex items-center gap-2">
+            重力加速度
+          </h3>
+          <p className="text-xs text-slate-400">物体の落下速度を調整</p>
+        </div>
+        <div className="grid grid-cols-3 gap-2">
+          <ParamsButton
+            label="下げる"
+            isSelected={gravityMode === "-"}
+            onClick={() => setGravityMode("-")}
+            disabled={isFalling}
+          />
+          <ParamsButton
+            label="普通"
+            isSelected={gravityMode === "0"}
+            onClick={() => setGravityMode("0")}
+            disabled={isFalling}
+          />
+          <ParamsButton
+            label="上げる"
+            isSelected={gravityMode === "+"}
+            onClick={() => setGravityMode("+")}
+            disabled={isFalling}
+          />
+        </div>
+      </div>
 
-            {/* 摩擦係数選択 */}
-            <div className="space-y-4">
-              <div>
-                <h3 className="text-lg font-bold text-white mb-1 flex items-center gap-2">
-                  摩擦係数
-                </h3>
-                <p className="text-xs text-slate-400">表面の滑りやすさ</p>
-              </div>
-              <div className="flex gap-2 flex-wrap">
-                <ParamsButton
-                  label="- (負)"
-                  isSelected={frictionMode === "-"}
-                  onClick={() => setFrictionMode("-")}
-                  disabled={isFalling}
-                />
-                <ParamsButton
-                  label="0 (無)"
-                  isSelected={frictionMode === "0"}
-                  onClick={() => setFrictionMode("0")}
-                  disabled={isFalling}
-                />
-                <ParamsButton
-                  label="+ (正)"
-                  isSelected={frictionMode === "+"}
-                  onClick={() => setFrictionMode("+")}
-                  disabled={isFalling}
-                />
-              </div>
-            </div>
+      <div className="space-y-3">
+        <div>
+          <h3 className="text-base font-bold text-white mb-1 flex items-center gap-2">
+            摩擦係数
+          </h3>
+          <p className="text-xs text-slate-400">表面の滑りやすさ</p>
+        </div>
+        <div className="grid grid-cols-3 gap-2">
+          <ParamsButton
+            label="- (負)"
+            isSelected={frictionMode === "-"}
+            onClick={() => setFrictionMode("-")}
+            disabled={isFalling}
+          />
+          <ParamsButton
+            label="0 (無)"
+            isSelected={frictionMode === "0"}
+            onClick={() => setFrictionMode("0")}
+            disabled={isFalling}
+          />
+          <ParamsButton
+            label="+ (正)"
+            isSelected={frictionMode === "+"}
+            onClick={() => setFrictionMode("+")}
+            disabled={isFalling}
+          />
+        </div>
+      </div>
 
-            {/* 密度選択 */}
-            <div className="space-y-4">
-              <div>
-                <h3 className="text-lg font-bold text-white mb-1 flex items-center gap-2">
-                  重さ選択
-                </h3>
-                <p className="text-xs text-slate-400">物体の質量を変更</p>
-              </div>
-              <div className="flex gap-2 flex-wrap">
-                <ParamsButton
-                  label="軽い"
-                  isSelected={densityMode === "-"}
-                  onClick={() => setDensityMode("-")}
-                  disabled={isFalling}
-                />
-                <ParamsButton
-                  label="普通"
-                  isSelected={densityMode === "0"}
-                  onClick={() => setDensityMode("0")}
-                  disabled={isFalling}
-                />
-                <ParamsButton
-                  label="重い"
-                  isSelected={densityMode === "+"}
-                  onClick={() => setDensityMode("+")}
-                  disabled={isFalling}
-                />
-              </div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+      <div className="space-y-3">
+        <div>
+          <h3 className="text-base font-bold text-white mb-1 flex items-center gap-2">
+            重さ選択
+          </h3>
+          <p className="text-xs text-slate-400">物体の質量を変更</p>
+        </div>
+        <div className="grid grid-cols-3 gap-2">
+          <ParamsButton
+            label="軽い"
+            isSelected={densityMode === "-"}
+            onClick={() => setDensityMode("-")}
+            disabled={isFalling}
+          />
+          <ParamsButton
+            label="普通"
+            isSelected={densityMode === "0"}
+            onClick={() => setDensityMode("0")}
+            disabled={isFalling}
+          />
+          <ParamsButton
+            label="重い"
+            isSelected={densityMode === "+"}
+            onClick={() => setDensityMode("+")}
+            disabled={isFalling}
+          />
+        </div>
+      </div>
     </PhysicsContainer>
   );
 };
 
-// ===================== utils =====================
-// 重力加速度の値を取得
 const getGravityValue = (mode: GravityMode): number => {
   switch (mode) {
     case "-":
-      return 0.1; // 逆重力
+      return 0.1;
     case "0":
-      return 1; // 重力なし
+      return 1;
     case "+":
-      return 10; // 通常重力
+      return 10;
   }
 };
 
-// 摩擦係数の値を取得
 const getFrictionValue = (mode: FrictionMode): number => {
   switch (mode) {
     case "-":
-      return -0.5; // 負の摩擦
+      return -0.5;
     case "0":
-      return 0; // 摩擦なし
+      return 0;
     case "+":
-      return 0.5; // 正の摩擦
+      return 0.5;
   }
 };
 
-// 密度の値を取得
 const getDensityValue = (mode: DensityMode): number => {
   switch (mode) {
     case "-":
-      return 0.001; // 軽い
+      return 0.001;
     case "0":
-      return 0.01; // 普通
+      return 0.01;
     case "+":
-      return 1; // 重い
+      return 1;
   }
 };
 

@@ -8,19 +8,19 @@ export const ExecuteContainer: React.FC<{
   isFalling: boolean;
 }> = ({ onTry, onReset, isFalling }) => {
   return (
-    <div className="flex flex-col items-center gap-6 w-full max-w-2xl">
+    <div className="flex flex-col gap-4 w-full">
       <StatusIndicator 
         isActive={isFalling} 
-        label={isFalling ? "シミュレーション実行中" : "待機中"} 
+        label={isFalling ? "実行中" : "待機中"} 
       />
       
-      <div className="flex gap-4">
+      <div className="grid grid-cols-2 gap-3">
         <Button
           type="button"
           onClick={onTry}
           disabled={isFalling}
           size="lg"
-          className="group"
+          className="group w-full"
         >
           <PlayCircle className="w-5 h-5 transition-transform group-hover:scale-110" />
           Try！
@@ -30,7 +30,7 @@ export const ExecuteContainer: React.FC<{
           onClick={onReset}
           variant="outline"
           size="lg"
-          className="group"
+          className="group w-full"
         >
           <RotateCcw className="w-5 h-5 transition-transform group-hover:rotate-180 duration-500" />
           リセット

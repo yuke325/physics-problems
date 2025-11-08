@@ -12,7 +12,7 @@ export const ParamsButton: React.FC<{
       onClick={onClick}
       disabled={disabled}
       className={cn(
-        "relative px-5 py-2.5 rounded-xl font-semibold text-sm transition-all duration-300",
+        "relative px-3 py-2 rounded-lg font-semibold text-xs transition-all duration-300",
         "border-2 backdrop-blur-sm",
         isSelected
           ? "bg-gradient-to-r from-cyan-500 to-blue-500 border-cyan-400 text-white shadow-lg shadow-cyan-500/50 scale-105"
@@ -21,7 +21,7 @@ export const ParamsButton: React.FC<{
       )}
     >
       {isSelected && (
-        <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-cyan-400/20 to-blue-400/20 animate-pulse" />
+        <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-cyan-400/20 to-blue-400/20 animate-pulse" />
       )}
       <span className="relative z-10">{label}</span>
     </button>
