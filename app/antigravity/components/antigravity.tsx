@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
 import Matter from "matter-js";
+import type React from "react";
+import { useEffect, useRef, useState } from "react";
 
 type GravityMode = "-" | "0" | "+";
 type FrictionMode = "-" | "0" | "+";

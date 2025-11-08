@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useRef, useState } from "react";
 import Matter from "matter-js";
+import type React from "react";
+import { useRef, useState } from "react";
+import { PhysicsContainer } from "@/components/physics/Container";
+import { ParamsButton } from "@/components/physics/ParamsButton";
 import { useMatterCanvas } from "@/lib/useMatterCanvas";
 import { antigravityMatter } from "../lib/matter";
-import { ParamsButton } from "@/components/physics/ParamsButton";
-import { PhysicsContainer } from "@/components/physics/Container";
 
 type GravityMode = "-" | "0" | "+";
 type FrictionMode = "-" | "0" | "+";

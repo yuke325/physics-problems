@@ -1,6 +1,6 @@
 import Matter from "matter-js";
-import { AntigravityMatterResult } from "../types/antigravity";
-import { AntigravityMatterProps } from "./type";
+import type { AntigravityMatterProps } from "@/lib/types";
+import type { AntigravityMatterResult } from "../types/antigravity";
 
 export const antigravityMatter = ({
   slopeRef,

@@ -1,6 +1,6 @@
-import { useEffect, useRef } from "react";
 import Matter from "matter-js";
-import { MatterCanvasResult } from "./types";
+import { useEffect, useRef } from "react";
+import type { MatterCanvasResult } from "./types";
 
 type HooksProps = () => MatterCanvasResult;
 
