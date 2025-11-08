@@ -125,10 +125,11 @@ const AntiGravity: React.FC<{ title: string }> = ({ title }) => {
             <div className="space-y-4">
               <div>
                 <h3 className="text-lg font-bold text-white mb-1 flex items-center gap-2">
-                  <span className="text-cyan-400">⚡</span>
                   重力加速度
                 </h3>
-                <p className="text-xs text-slate-400">物体に働く重力の方向と大きさ</p>
+                <p className="text-xs text-slate-400">
+                  物体に働く重力の方向と大きさ
+                </p>
               </div>
               <div className="flex gap-2 flex-wrap">
                 <ParamsButton
@@ -156,7 +157,6 @@ const AntiGravity: React.FC<{ title: string }> = ({ title }) => {
             <div className="space-y-4">
               <div>
                 <h3 className="text-lg font-bold text-white mb-1 flex items-center gap-2">
-                  <span className="text-cyan-400">🔥</span>
                   摩擦係数
                 </h3>
                 <p className="text-xs text-slate-400">表面の滑りやすさを決定</p>

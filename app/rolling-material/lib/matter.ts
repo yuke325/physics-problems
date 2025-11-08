@@ -22,7 +22,9 @@ export const initializeRollingMaterial = () => {
       angle: slopeAngle, // 30度傾ける
       friction: 0.8, // 摩擦係数を設定
       render: {
-        fillStyle: "#2ecc71",
+        fillStyle: "rgba(6, 182, 212, 0.8)",
+        strokeStyle: "#22d3ee",
+        lineWidth: 2,
       },
     },
   );
@@ -49,7 +51,9 @@ export const initializeRollingMaterial = () => {
     density: 0.04, // 密度を上げて重くする
     restitution: 0.3, // 反発係数
     render: {
-      fillStyle: "#e74c3c",
+      fillStyle: "rgba(168, 85, 247, 0.9)",
+      strokeStyle: "#c084fc",
+      lineWidth: 3,
     },
   });
 

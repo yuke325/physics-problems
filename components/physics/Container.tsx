@@ -25,8 +25,23 @@ export const PhysicsContainer: React.FC<{
 
       <Card className="p-4 relative overflow-hidden group">
         <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 via-transparent to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-        <div className="relative rounded-xl overflow-hidden border-2 border-slate-700/50 shadow-2xl">
-          <canvas ref={canvasRef} />
+        <div className="relative rounded-xl overflow-hidden border-2 border-slate-700/50 shadow-2xl bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+          {/* Grid Background Pattern */}
+          <div 
+            className="absolute inset-0 opacity-20" 
+            style={{
+              backgroundImage: `
+                linear-gradient(rgba(6, 182, 212, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(6, 182, 212, 0.1) 1px, transparent 1px)
+              `,
+              backgroundSize: '40px 40px',
+            }}
+          />
+          {/* Radial Glow Effects */}
+          <div className="absolute top-0 left-1/4 w-64 h-64 bg-cyan-500/10 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 right-1/4 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl" />
+          
+          <canvas ref={canvasRef} className="relative z-10" />
         </div>
       </Card>
 

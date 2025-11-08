@@ -99,7 +99,6 @@ const RollingMaterial: React.FC<{ title: string }> = ({ title }) => {
             <div className="space-y-4">
               <div>
                 <h3 className="text-lg font-bold text-white mb-1 flex items-center gap-2">
-                  <span className="text-cyan-400">⚡</span>
                   重力加速度
                 </h3>
                 <p className="text-xs text-slate-400">物体の落下速度を調整</p>
@@ -130,7 +129,6 @@ const RollingMaterial: React.FC<{ title: string }> = ({ title }) => {
             <div className="space-y-4">
               <div>
                 <h3 className="text-lg font-bold text-white mb-1 flex items-center gap-2">
-                  <span className="text-cyan-400">🔥</span>
                   摩擦係数
                 </h3>
                 <p className="text-xs text-slate-400">表面の滑りやすさ</p>
@@ -161,7 +159,6 @@ const RollingMaterial: React.FC<{ title: string }> = ({ title }) => {
             <div className="space-y-4">
               <div>
                 <h3 className="text-lg font-bold text-white mb-1 flex items-center gap-2">
-                  <span className="text-cyan-400">⚖️</span>
                   重さ選択
                 </h3>
                 <p className="text-xs text-slate-400">物体の質量を変更</p>

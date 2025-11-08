@@ -24,7 +24,9 @@ export const initializeAntigravityMatter = () => {
       angle: slopeAngle, // 30度傾ける
       friction: 0.8, // 摩擦係数を設定
       render: {
-        fillStyle: "#2ecc71",
+        fillStyle: "rgba(6, 182, 212, 0.8)",
+        strokeStyle: "#22d3ee",
+        lineWidth: 2,
       },
     },
   );
@@ -45,7 +47,9 @@ export const initializeAntigravityMatter = () => {
       isStatic: true,
       friction: 0.8,
       render: {
-        fillStyle: "#2ecc71",
+        fillStyle: "rgba(6, 182, 212, 0.8)",
+        strokeStyle: "#22d3ee",
+        lineWidth: 2,
       },
     },
   );
@@ -72,7 +76,9 @@ export const initializeAntigravityMatter = () => {
     density: 0.04, // 密度を上げて重くする
     restitution: 0.3, // 反発係数
     render: {
-      fillStyle: "#e74c3c",
+      fillStyle: "rgba(236, 72, 153, 0.9)",
+      strokeStyle: "#f9a8d4",
+      lineWidth: 3,
     },
   });
 
@@ -110,7 +116,9 @@ export const initializeAntigravityMatter = () => {
       density: 0.001,
       restitution: 0.5,
       render: {
-        fillStyle: "#f39c12",
+        fillStyle: "rgba(251, 191, 36, 0.9)",
+        strokeStyle: "#fbbf24",
+        lineWidth: 2,
       },
     });
     pins.push(pin);
