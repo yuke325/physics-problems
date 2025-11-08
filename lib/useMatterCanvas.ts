@@ -5,13 +5,22 @@ import { useEffect, useRef } from "react";
 import type { MatterCanvasResult } from "./types";
 
 type HooksProps = () => MatterCanvasResult;
+type CanvasOptions = {
+  width?: number;
+  height?: number;
+};
 
-export const useMatterCanvas = (func: HooksProps) => {
+export const useMatterCanvas = (
+  func: HooksProps,
+  options: CanvasOptions = {},
+) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const engineRef = useRef<Matter.Engine | null>(null);
   const worldRef = useRef<Matter.World | null>(null);
   const renderRef = useRef<Matter.Render | null>(null);
   const runnerRef = useRef<Matter.Runner | null>(null);
+
+  const { width = 800, height = 600 } = options;
 
   useEffect(() => {
     let disposed = false;
@@ -37,8 +46,8 @@ export const useMatterCanvas = (func: HooksProps) => {
         canvas,
         engine,
         options: {
-          width: 800,
-          height: 600,
+          width,
+          height,
           wireframes: false,
           background: "transparent",
           pixelRatio: window.devicePixelRatio || 1,
@@ -132,11 +141,12 @@ export const useMatterCanvas = (func: HooksProps) => {
         engineRef.current = null;
       }
     };
-  }, [func]);
+  }, [func, width, height]);
 
   return {
     canvasRef,
     engineRef,
     worldRef,
+    renderRef,
   };
 };
