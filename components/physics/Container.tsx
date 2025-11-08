@@ -8,7 +8,8 @@ export const PhysicsContainer: React.FC<{
   onReset: () => void;
   isFalling: boolean;
   canvasRef: React.RefObject<HTMLCanvasElement | null>;
-}> = ({ title, children, onTry, onReset, isFalling, canvasRef }) => {
+  tryLabel?: string;
+}> = ({ title, children, onTry, onReset, isFalling, canvasRef, tryLabel }) => {
   return (
     <div className="min-h-screen flex flex-col lg:flex-row gap-6 p-6 max-w-[1800px] mx-auto pt-25">
       {/* Left Sidebar - Parameters */}
@@ -45,6 +46,7 @@ export const PhysicsContainer: React.FC<{
                 onTry={onTry}
                 onReset={onReset}
                 isFalling={isFalling}
+                tryLabel={tryLabel}
               />
             </div>
           </div>
