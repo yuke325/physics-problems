@@ -27,28 +27,30 @@ const ProjectileMotion: React.FC<{ title: string }> = ({ title }) => {
   const { canvasRef, engineRef } = useMatterCanvas(initializeScene);
 
   const handleFire = () => {
-    if (ballRef.current && engineRef.current) {
+    if (ballRef.current && targetRef.current && engineRef.current) {
       // 重力を有効にする
       engineRef.current.gravity.y = 1;
-      fireBall(ballRef.current, angle, speed);
+      fireBall(ballRef.current, targetRef.current, angle, speed);
       setIsFired(true);
     }
   };
 
   const handleReset = () => {
-    if (ballRef.current && engineRef.current) {
-      // ボールを元の位置に戻し、速度をゼロにする
-      Matter.Body.setPosition(ballRef.current, { x: 100, y: 530 });
-      Matter.Body.setVelocity(ballRef.current, { x: 0, y: 0 });
-      Matter.Body.setAngularVelocity(ballRef.current, 0);
+    if (ballRef.current && targetRef.current && engineRef.current) {
+      const engine = engineRef.current;
+      engine.gravity.y = 0;
+      Matter.Composite.remove(engine.world, targetRef.current);
+      Matter.Composite.remove(engine.world, ballRef.current);
 
-      // 重力を無効にする（任意）
-      // engineRef.current.gravity.y = 0;
+      const custom = projectileMotionMatter({
+        ballRef,
+        targetRef,
+      });
 
+      Matter.Composite.add(engine.world, custom);
       setIsFired(false);
     }
   };
-
   return (
     <PhysicsContainer
       title={title}

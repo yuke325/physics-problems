@@ -27,15 +27,33 @@ export const initializeProjectileMotion = () => {
     },
   });
 
-  // 的
-  const target = Matter.Bodies.rectangle(700, 540, 40, 40, {
-    isStatic: true, // 最初は静的にしておく
+  // 人型のターゲットを作成
+  const head = Matter.Bodies.circle(700, 500, 15, {
+    // 頭 (円)
+    density: 0.005,
+    restitution: 0.5,
     render: {
-      fillStyle: "rgba(255, 69, 0, 1)", // オレンジ色
-      strokeStyle: "#ff4500",
-      lineWidth: 3,
+      fillStyle: "#f5d6c4", // 肌色っぽい色
     },
   });
+
+  const body = Matter.Bodies.rectangle(700, 545, 30, 60, {
+    // 胴体 (長方形)
+    density: 0.005,
+    restitution: 0.1,
+    render: {
+      fillStyle: "#4a90e2", // 青っぽい服
+    },
+  });
+
+  // 複合ボディとしてターゲットを作成
+  const target = Matter.Body.create({
+    parts: [head, body],
+    isStatic: false, // isStatic: false にして動くようにする
+    friction: 0.8,
+  });
+  // 複合ボディの初期位置を少し調整
+  Matter.Body.setPosition(target, { x: 700, y: 520 });
 
   // 発射されるボール
   const ball = Matter.Bodies.circle(100, 530, 20, {
@@ -69,6 +87,7 @@ export const projectileMotionMatter = ({
 // ボールを発射する関数
 export const fireBall = (
   ball: Matter.Body,
+  target: Matter.Body,
   angle: number,
   speed: number,
 ) => {
@@ -86,6 +105,18 @@ export const fireBall = (
   Matter.Body.setPosition(ball, { x: 100, y: 530 });
   Matter.Body.setVelocity(ball, { x: 0, y: 0 });
   Matter.Body.setAngularVelocity(ball, 0);
+
+  // ターゲットも元の位置に戻す
+  Matter.Body.setPosition(target, { x: 700, y: 520 });
+  Matter.Body.setVelocity(target, { x: 0, y: 0 });
+  Matter.Body.setAngularVelocity(target, 0);
+  // 複合ボディの各パーツの角度もリセット
+  target.parts.forEach((part, index) => {
+    if (index === 0) return; // 最初の要素は本体なのでスキップ
+    Matter.Body.setAngle(part, 0);
+    Matter.Body.setAngularVelocity(part, 0);
+  });
+
 
   // 力を加える
   Matter.Body.applyForce(ball, ball.position, force);
