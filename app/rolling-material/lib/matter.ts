@@ -22,16 +22,22 @@ export const initializeRollingMaterial = () => {
   const slopeX = 500;
   const slopeY = 500;
 
-  const slope = Matter.Bodies.rectangle(slopeX, slopeY, slopeWidth, slopeHeight, {
-    isStatic: true,
-    angle: slopeAngle,
-    friction: 0.8,
-    render: {
-      fillStyle: "rgba(6, 182, 212, 0.8)",
-      strokeStyle: "#22d3ee",
-      lineWidth: 2,
+  const slope = Matter.Bodies.rectangle(
+    slopeX,
+    slopeY,
+    slopeWidth,
+    slopeHeight,
+    {
+      isStatic: true,
+      angle: slopeAngle,
+      friction: 0.8,
+      render: {
+        fillStyle: "rgba(6, 182, 212, 0.8)",
+        strokeStyle: "#22d3ee",
+        lineWidth: 2,
+      },
     },
-  });
+  );
 
   // 円盤を斜面の上に配置
   const circleRadius = 25;

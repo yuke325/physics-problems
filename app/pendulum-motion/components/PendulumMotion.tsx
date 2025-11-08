@@ -35,13 +35,10 @@ const PendulumMotion: React.FC<{ title: string }> = ({ title }) => {
     }
   };
 
-  const { canvasRef, engineRef, worldRef } = useMatterCanvas(
-    initializeScene,
-    {
-      width: 1200,
-      height: 800,
-    },
-  );
+  const { canvasRef, engineRef, worldRef } = useMatterCanvas(initializeScene, {
+    width: 1200,
+    height: 800,
+  });
 
   const handleReset = useCallback(() => {
     if (worldRef.current && pendulumsRef.current.length > 0) {

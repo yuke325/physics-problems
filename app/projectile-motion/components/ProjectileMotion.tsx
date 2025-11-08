@@ -70,9 +70,8 @@ const ProjectileMotion: React.FC<{ title: string }> = ({ title }) => {
         <div className="flex flex-wrap items-center gap-3">
           <ParamsButton
             label="空気抵抗"
-            value={airResistance ? "あり" : "なし"}
             onClick={() => setAirResistance((prev) => !prev)}
-            isActive={airResistance}
+            isSelected={airResistance}
             disabled={isFired}
           />
         </div>
