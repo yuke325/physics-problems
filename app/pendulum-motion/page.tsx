@@ -12,9 +12,9 @@ export default function Home() {
 
       <div className="relative z-10">
         <PendulumMotion
-          title={labConfig.title} // labConfigからタイトルを取得
-          description={labConfig.description} // labConfigからdescriptionを取得
-          explanation={labConfig.explanation} // labConfigからexplanationを取得
+          title={labConfig.title ?? "タイトルがありません"}
+          description={labConfig.description ?? "実験の説明がありません"}
+          explanation={labConfig.explanation ?? "解説がありません"}
         />
       </div>
     </main>
