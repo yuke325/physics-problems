@@ -1,4 +1,4 @@
-import AntiGravity from "./components/Antigravity";
+import Bowling from "./components/Bowling";
 import labConfig from "./lab.config"; // lab.configをインポート
 
 export default function Home() {
@@ -11,7 +11,7 @@ export default function Home() {
       </div>
 
       <div className="relative z-10">
-        <AntiGravity
+        <Bowling
           title={labConfig.title ?? ""} // labConfigからタイトルを取得
           description={labConfig.description ?? ""} // labConfigからdescriptionを取得
           explanation={labConfig.explanation ?? ""} // labConfigからexplanationを取得

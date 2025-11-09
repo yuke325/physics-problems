@@ -11,7 +11,7 @@ import { antigravityMatter } from "../lib/matter";
 type GravityMode = "-" | "0" | "+";
 type FrictionMode = "-" | "0" | "+";
 
-const AntiGravity: React.FC<{
+const Bowling: React.FC<{
   title: string;
   description: string; // 追加
   explanation?: string; // 追加
@@ -199,4 +199,4 @@ const getFrictionValue = (mode: FrictionMode): number => {
   }
 };
 
-export default AntiGravity;
+export default Bowling;
