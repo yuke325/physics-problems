@@ -1,0 +1,18 @@
+
+import FreeFall from "./components/FreeFall";
+
+export default function Home() {
+  return (
+    <main className="min-h-screen bg-linear-to-br from-slate-950 via-slate-900 to-slate-950 relative overflow-hidden">
+      {/* Background Effects */}
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(56,189,248,0.15),transparent_50%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,rgba(34,211,238,0.15),transparent_50%)]" />
+      </div>
+
+      <div className="relative z-10">
+        <FreeFall title="物理シミュレーター - 自由落下" />
+      </div>
+    </main>
+  );
+}
