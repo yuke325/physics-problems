@@ -1,25 +1,26 @@
 "use client";
 
+import Matter from "matter-js";
 import type React from "react";
 import { useCallback, useRef, useState } from "react";
-import Matter from "matter-js";
 import { PhysicsContainer } from "@/components/physics/Container";
 import { ParamsButton } from "@/components/physics/ParamsButton";
 import { useMatterCanvas } from "@/lib/useMatterCanvas";
 import {
-  INITIAL_BALL_POSITION,
-  INITIAL_BLOCK_POSITION,
   type GravityMode,
-  type RestitutionMode,
   getGravityValue,
   getRestitutionValue,
+  INITIAL_BALL_POSITION,
+  INITIAL_BLOCK_POSITION,
+  type RestitutionMode,
 } from "../lib/constants";
 import { reboundBallMatter } from "../lib/matter";
 
 const ReboundBall: React.FC<{ title: string }> = ({ title }) => {
   const [isFalling, setIsFalling] = useState(false);
   const [gravityMode, setGravityMode] = useState<GravityMode>("0");
-  const [restitutionMode, setRestitutionMode] = useState<RestitutionMode>("0.5");
+  const [restitutionMode, setRestitutionMode] =
+    useState<RestitutionMode>("0.5");
 
   const groundRef = useRef<Matter.Body | null>(null);
   const leftWallRef = useRef<Matter.Body | null>(null);
