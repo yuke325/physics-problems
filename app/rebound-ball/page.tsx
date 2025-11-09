@@ -11,7 +11,11 @@ export default function Page() {
       </div>
 
       <div className="relative z-10">
-        <ReboundBall title={labConfig.title} />
+        <ReboundBall
+          title={labConfig.title}
+          description={labConfig.description}
+          explanation={labConfig.explanation}
+        />
       </div>
     </main>
   );

@@ -16,7 +16,11 @@ import {
 } from "../lib/constants";
 import { reboundBallMatter } from "../lib/matter";
 
-const ReboundBall: React.FC<{ title: string }> = ({ title }) => {
+const ReboundBall: React.FC<{
+  title: string;
+  description: string;
+  explanation?: string;
+}> = ({ title, description, explanation }) => {
   const [isFalling, setIsFalling] = useState(false);
   const [gravityMode, setGravityMode] = useState<GravityMode>("0");
   const [restitutionMode, setRestitutionMode] =
@@ -109,6 +113,8 @@ const ReboundBall: React.FC<{ title: string }> = ({ title }) => {
   return (
     <PhysicsContainer
       title={title}
+      description={description} // 追加
+      explanation={explanation} // 追加
       canvasRef={canvasRef}
       onTry={handleTry}
       onReset={handleReset}
