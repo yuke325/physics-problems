@@ -1,25 +1,42 @@
+import { PlayCircle, RotateCcw } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { StatusIndicator } from "@/components/ui/status-indicator";
+
 export const ExecuteContainer: React.FC<{
   onTry: () => void;
   onReset: () => void;
   isFalling: boolean;
-}> = ({ onTry, onReset, isFalling }) => {
+  tryLabel?: string;
+}> = ({ onTry, onReset, isFalling, tryLabel }) => {
   return (
-    <div className="mt-4 flex gap-4">
-      <button
-        type="button"
-        onClick={onTry}
-        disabled={isFalling}
-        className="px-8 py-3 bg-red-600 hover:bg-red-700 disabled:bg-gray-600 disabled:cursor-not-allowed text-white font-bold rounded-lg transition-colors text-lg"
-      >
-        Try！
-      </button>
-      <button
-        type="button"
-        onClick={onReset}
-        className="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg transition-colors text-lg"
-      >
-        リセット
-      </button>
+    <div className="flex flex-col gap-4 w-full">
+      <StatusIndicator
+        isActive={isFalling}
+        label={isFalling ? "実行中" : "待機中"}
+      />
+
+      <div className="grid grid-cols-2 gap-3">
+        <Button
+          type="button"
+          onClick={onTry}
+          disabled={isFalling}
+          size="lg"
+          className="group w-full"
+        >
+          <PlayCircle className="w-5 h-5 transition-transform group-hover:scale-110" />
+          {tryLabel || "Try！"}
+        </Button>
+        <Button
+          type="button"
+          onClick={onReset}
+          variant="outline"
+          size="lg"
+          className="group w-full"
+        >
+          <RotateCcw className="w-5 h-5 transition-transform group-hover:rotate-180 duration-500" />
+          リセット
+        </Button>
+      </div>
     </div>
   );
 };
