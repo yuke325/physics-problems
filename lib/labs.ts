@@ -12,11 +12,13 @@ export type LabSummary = {
   accent: string;
   status: string;
   order: number;
+  explanation?: string; // 追加
 };
 
 export type LabConfig = Partial<Omit<LabSummary, "slug" | "order">> & {
   slug?: string;
   order?: number;
+  explanation?: string; // 追加
 };
 
 type LabConfigModule = {

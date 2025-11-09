@@ -12,7 +12,12 @@ import {
   resetElectrons,
 } from "../lib/matter";
 
-const CoulombForce: React.FC<{ title: string }> = ({ title }) => {
+const CoulombForce: React.FC<{
+  title: string;
+  description: string; // 追加
+  explanation?: string; // 追加
+}> = ({ title, description, explanation }) => {
+  // propsに追加
   const [isSelected, setIsSelected] = useState(false);
   const [chargeType, setChargeType] = useState<
     "positive" | "neutral" | "negative"
@@ -89,6 +94,8 @@ const CoulombForce: React.FC<{ title: string }> = ({ title }) => {
   return (
     <PhysicsContainer
       title={title}
+      description={description} // 追加
+      explanation={explanation} // 追加
       onTry={handleStart}
       onReset={handleReset}
       isFalling={isSelected}

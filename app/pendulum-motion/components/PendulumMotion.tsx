@@ -11,7 +11,12 @@ import {
   startPendulumWave,
 } from "../lib/matter";
 
-const PendulumMotion: React.FC<{ title: string }> = ({ title }) => {
+const PendulumMotion: React.FC<{
+  title: string;
+  description: string; // 追加
+  explanation?: string; // 追加
+}> = ({ title, description, explanation }) => {
+  // propsに追加
   const [isSimulating, setIsSimulating] = useState(false);
   const [numPendulums, setNumPendulums] = useState(15); // 振り子の数
 
@@ -67,6 +72,8 @@ const PendulumMotion: React.FC<{ title: string }> = ({ title }) => {
   return (
     <PhysicsContainer
       title={title}
+      description={description} // 追加
+      explanation={explanation} // 追加
       onTry={handleTry}
       onReset={handleReset}
       isFalling={isSimulating}

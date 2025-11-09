@@ -2,13 +2,18 @@
 
 import Matter from "matter-js";
 import type React from "react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { PhysicsContainer } from "@/components/physics/Container";
 import { ParamsButton } from "@/components/physics/ParamsButton";
 import { useMatterCanvas } from "@/lib/useMatterCanvas";
 import { fireBall, projectileMotionMatter } from "../lib/matter";
 
-const ProjectileMotion: React.FC<{ title: string }> = ({ title }) => {
+const ProjectileMotion: React.FC<{
+  title: string;
+  description: string; // 追加
+  explanation?: string; // 追加
+}> = ({ title, description, explanation }) => {
+  // propsに追加
   const [isFired, setIsFired] = useState(false);
   const [angle, setAngle] = useState(45); // 初期角度 45度
   const [speed, setSpeed] = useState(120); // 初期速度 120
@@ -59,6 +64,8 @@ const ProjectileMotion: React.FC<{ title: string }> = ({ title }) => {
   return (
     <PhysicsContainer
       title={title}
+      description={description} // 追加
+      explanation={explanation} // 追加
       onTry={handleFire}
       onReset={handleReset}
       isFalling={isFired}

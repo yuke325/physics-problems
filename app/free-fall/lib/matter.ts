@@ -1,4 +1,3 @@
-
 import Matter from "matter-js";
 import type { MatterCanvasResult } from "@/lib/types";
 

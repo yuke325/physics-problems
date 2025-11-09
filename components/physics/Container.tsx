@@ -1,4 +1,20 @@
+import ReactMarkdown from "react-markdown"; // react-markdownをインポート
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { Button } from "@/components/ui/button"; // Buttonコンポーネントをインポート
 import { Card } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { ExecuteContainer } from "./ExecuteContainer";
 
 export const PhysicsContainer: React.FC<{
@@ -9,21 +25,64 @@ export const PhysicsContainer: React.FC<{
   isFalling: boolean;
   canvasRef: React.RefObject<HTMLCanvasElement | null>;
   tryLabel?: string;
-}> = ({ title, children, onTry, onReset, isFalling, canvasRef, tryLabel }) => {
+  description: string; // 追加
+  explanation?: string; // 追加
+}> = ({
+  title,
+  children,
+  onTry,
+  onReset,
+  isFalling,
+  canvasRef,
+  tryLabel,
+  description,
+  explanation,
+}) => {
   return (
     <div className="min-h-screen flex flex-col lg:flex-row gap-6 p-6 max-w-[1800px] mx-auto pt-25">
       {/* Left Sidebar - Parameters */}
       <aside className="lg:w-96 flex-shrink-0 space-y-6">
         {/* Title Section */}
         <div className="space-y-3">
+          {" "}
+          {/* このdivがh1とDialogを囲む */}
           <div className="inline-block">
             <div className="h-1 w-12 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full mb-4" />
           </div>
           <h1 className="text-3xl lg:text-4xl font-bold bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">
             {title}
           </h1>
-        </div>
-
+          {/* 問題文と解説のポップアップトリガー */}
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant="outline" className="w-full mt-4">
+                問題と解説
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-2xl">
+              {" "}
+              {/* max-w-2xlに変更 */}
+              <DialogHeader>
+                <DialogTitle>{title}</DialogTitle>
+                <DialogDescription>{description}</DialogDescription>
+              </DialogHeader>
+              {explanation && (
+                <Accordion type="single" collapsible className="w-full">
+                  <AccordionItem value="explanation">
+                    <AccordionTrigger>解説を見る</AccordionTrigger>
+                    <AccordionContent>
+                      <div className="prose prose-invert max-w-none">
+                        <ReactMarkdown>{explanation}</ReactMarkdown>{" "}
+                        {/* ReactMarkdownを使用 */}
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
+              )}
+            </DialogContent>
+          </Dialog>
+        </div>{" "}
+        {/* ここで閉じる */}
         {/* Parameters Card */}
         <Card className="p-6 sticky top-6">
           <div className="space-y-6">
@@ -52,8 +111,6 @@ export const PhysicsContainer: React.FC<{
           </div>
         </Card>
       </aside>
-
-      {/* Main Content - Canvas View */}
       <main className="flex-1 flex flex-col gap-6">
         <Card className="flex-1 p-4 relative overflow-hidden group">
           <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 via-transparent to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />

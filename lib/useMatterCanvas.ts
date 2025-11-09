@@ -1,7 +1,7 @@
 "use client";
 
 import Matter from "matter-js";
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react"; // useCallbackをインポート
 import type { MatterCanvasResult } from "./types";
 
 type HooksProps = () => MatterCanvasResult;
@@ -22,7 +22,8 @@ export const useMatterCanvas = (
 
   const { width = 800, height = 600 } = options;
 
-  const reinitialize = () => {
+  const reinitialize = useCallback(() => {
+    // useCallbackでラップ
     if (renderRef.current) {
       Matter.Render.stop(renderRef.current);
     }
@@ -119,7 +120,7 @@ export const useMatterCanvas = (
     const runner = Matter.Runner.create();
     runnerRef.current = runner;
     Matter.Runner.run(runner, engine);
-  };
+  }, [func, width, height]); // func, width, heightを依存関係に追加
 
   useEffect(() => {
     let disposed = false;
@@ -158,7 +159,7 @@ export const useMatterCanvas = (
         engineRef.current = null;
       }
     };
-  }, [func, width, height]);
+  }, [reinitialize]); // reinitializeのみを依存関係にする
 
   return {
     canvasRef,

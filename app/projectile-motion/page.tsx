@@ -1,4 +1,5 @@
 import ProjectileMotion from "./components/ProjectileMotion";
+import labConfig from "./lab.config"; // lab.configをインポート
 
 export default function Home() {
   return (
@@ -10,7 +11,11 @@ export default function Home() {
       </div>
 
       <div className="relative z-10">
-        <ProjectileMotion title="物理シミュレーター - 投射運動と放物線" />
+        <ProjectileMotion
+          title={labConfig.title} // labConfigからタイトルを取得
+          description={labConfig.description} // labConfigからdescriptionを取得
+          explanation={labConfig.explanation} // labConfigからexplanationを取得
+        />
       </div>
     </main>
   );
