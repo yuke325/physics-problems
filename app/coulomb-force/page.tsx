@@ -12,9 +12,9 @@ export default function Home() {
 
       <div className="relative z-10">
         <CoulombForce
-          title={labConfig.title} // labConfigからタイトルを取得
-          description={labConfig.description} // labConfigからdescriptionを取得
-          explanation={labConfig.explanation} // labConfigからexplanationを取得
+          title={labConfig.title ?? ""} // labConfigからタイトルを取得
+          description={labConfig.description ?? ""} // labConfigからdescriptionを取得
+          explanation={labConfig.explanation ?? ""} // labConfigからexplanationを取得
         />
       </div>
     </main>
