@@ -6,13 +6,12 @@ import { useCallback, useRef, useState } from "react";
 import { PhysicsContainer } from "@/components/physics/Container";
 import { ParamsButton } from "@/components/physics/ParamsButton";
 import { useMatterCanvas } from "@/lib/useMatterCanvas";
-import { rollingMaterialMatter } from "../lib/matter";
+import { antigravityMatter } from "../lib/matter";
 
 type GravityMode = "-" | "0" | "+";
 type FrictionMode = "-" | "0" | "+";
-type DensityMode = "-" | "0" | "+";
 
-const RollingMaterial: React.FC<{
+const AntiGravity: React.FC<{
   title: string;
   description: string; // 追加
   explanation?: string; // 追加
@@ -21,16 +20,19 @@ const RollingMaterial: React.FC<{
   const [isFalling, setIsFalling] = useState(false);
   const [gravityMode, setGravityMode] = useState<GravityMode>("0");
   const [frictionMode, setFrictionMode] = useState<FrictionMode>("0");
-  const [densityMode, setDensityMode] = useState<DensityMode>("0");
 
   const slopeRef = useRef<Matter.Body | null>(null);
-  const circleRef = useRef<Matter.Body | null>(null);
+  const groundRef = useRef<Matter.Body | null>(null);
+  const boxRef = useRef<Matter.Body | null>(null);
+  const pinsRef = useRef<Matter.Body[]>([]);
 
   const initializeScene = useCallback(
     () =>
-      rollingMaterialMatter({
+      antigravityMatter({
         slopeRef,
-        circleRef,
+        groundRef,
+        boxRef,
+        pinsRef,
       }),
     [],
   );
@@ -41,15 +43,11 @@ const RollingMaterial: React.FC<{
   });
 
   const handleTry = () => {
-    if (circleRef.current && engineRef.current && !isFalling) {
+    if (boxRef.current && engineRef.current && !isFalling) {
       engineRef.current.gravity.y = getGravityValue(gravityMode);
-
       const frictionValue = getFrictionValue(frictionMode);
-      const densityValue = getDensityValue(densityMode);
 
-      Matter.Body.setDensity(circleRef.current, densityValue);
-
-      Matter.Body.set(circleRef.current, {
+      Matter.Body.set(boxRef.current, {
         friction: frictionValue,
         frictionStatic:
           frictionValue === 0
@@ -65,18 +63,43 @@ const RollingMaterial: React.FC<{
         });
       }
 
+      if (groundRef.current) {
+        Matter.Body.set(groundRef.current, {
+          friction:
+            frictionMode === "0" ? 0 : frictionMode === "-" ? -0.5 : 0.8,
+        });
+      }
+
+      pinsRef.current.forEach((pin) => {
+        Matter.Body.set(pin, {
+          friction:
+            frictionMode === "0" ? 0 : frictionMode === "-" ? -0.5 : 0.5,
+          frictionStatic:
+            frictionMode === "0" ? 0 : frictionMode === "-" ? -0.6 : 0.6,
+          frictionAir: 0,
+        });
+      });
+
       setIsFalling(true);
     }
   };
 
   const handleReset = () => {
-    if (engineRef.current && circleRef.current) {
+    if (engineRef.current && boxRef.current) {
       const engine = engineRef.current;
       engine.gravity.y = 0;
 
-      Matter.Composite.remove(engine.world, circleRef.current);
+      Matter.Composite.remove(engine.world, boxRef.current);
+      pinsRef.current.forEach((pin) => {
+        Matter.Composite.remove(engine.world, pin);
+      });
 
-      const custom = rollingMaterialMatter({ slopeRef, circleRef });
+      const custom = antigravityMatter({
+        slopeRef,
+        groundRef,
+        boxRef,
+        pinsRef,
+      });
 
       Matter.Composite.add(engine.world, custom);
       setIsFalling(false);
@@ -98,23 +121,23 @@ const RollingMaterial: React.FC<{
           <h3 className="text-base font-bold text-white mb-1 flex items-center gap-2">
             重力加速度
           </h3>
-          <p className="text-xs text-slate-400">物体の落下速度を調整</p>
+          <p className="text-xs text-slate-400">物体に働く重力の方向と大きさ</p>
         </div>
         <div className="grid grid-cols-3 gap-2">
           <ParamsButton
-            label="下げる"
+            label="- (逆)"
             isSelected={gravityMode === "-"}
             onClick={() => setGravityMode("-")}
             disabled={isFalling}
           />
           <ParamsButton
-            label="普通"
+            label="0 (無)"
             isSelected={gravityMode === "0"}
             onClick={() => setGravityMode("0")}
             disabled={isFalling}
           />
           <ParamsButton
-            label="上げる"
+            label="+ (通常)"
             isSelected={gravityMode === "+"}
             onClick={() => setGravityMode("+")}
             disabled={isFalling}
@@ -127,7 +150,7 @@ const RollingMaterial: React.FC<{
           <h3 className="text-base font-bold text-white mb-1 flex items-center gap-2">
             摩擦係数
           </h3>
-          <p className="text-xs text-slate-400">表面の滑りやすさ</p>
+          <p className="text-xs text-slate-400">表面の滑りやすさを決定</p>
         </div>
         <div className="grid grid-cols-3 gap-2">
           <ParamsButton
@@ -150,35 +173,6 @@ const RollingMaterial: React.FC<{
           />
         </div>
       </div>
-
-      <div className="space-y-3">
-        <div>
-          <h3 className="text-base font-bold text-white mb-1 flex items-center gap-2">
-            重さ選択
-          </h3>
-          <p className="text-xs text-slate-400">物体の質量を変更</p>
-        </div>
-        <div className="grid grid-cols-3 gap-2">
-          <ParamsButton
-            label="軽い"
-            isSelected={densityMode === "-"}
-            onClick={() => setDensityMode("-")}
-            disabled={isFalling}
-          />
-          <ParamsButton
-            label="普通"
-            isSelected={densityMode === "0"}
-            onClick={() => setDensityMode("0")}
-            disabled={isFalling}
-          />
-          <ParamsButton
-            label="重い"
-            isSelected={densityMode === "+"}
-            onClick={() => setDensityMode("+")}
-            disabled={isFalling}
-          />
-        </div>
-      </div>
     </PhysicsContainer>
   );
 };
@@ -186,11 +180,11 @@ const RollingMaterial: React.FC<{
 const getGravityValue = (mode: GravityMode): number => {
   switch (mode) {
     case "-":
-      return 0.1;
+      return -1;
     case "0":
-      return 1;
+      return 0;
     case "+":
-      return 10;
+      return 1;
   }
 };
 
@@ -205,15 +199,4 @@ const getFrictionValue = (mode: FrictionMode): number => {
   }
 };
 
-const getDensityValue = (mode: DensityMode): number => {
-  switch (mode) {
-    case "-":
-      return 0.001;
-    case "0":
-      return 0.01;
-    case "+":
-      return 1;
-  }
-};
-
-export default RollingMaterial;
+export default AntiGravity;

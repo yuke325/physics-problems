@@ -1,36 +1,43 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Physics Problems
 
-## Getting Started
+## プロジェクト概要
+- Matter.js を用いたブラウザ物理シミュレーションを、Next.js 16 + React 19 の App Router 上でギャラリー化したデモサイトです。
+- 「気になる現象だけをすぐ試す」ことをテーマに、各ラボが独立したページとして存在し、重力・摩擦・密度などをワンタップで切り替えて直感的に挙動を観測できます。
+- UI はダークトーンとシアン/パープルのグラデーションで統一し、物理量をイメージしやすいアクセントを与えています。
 
-First, run the development server:
+## 公開中のラボ
+| コード | タイトル | 体験内容 |
+| --- | --- | --- |
+| EX-01 | 反重力ボウリング | もしも重力が逆向きに働いたら？斜面上のボウリングピンを舞台に、反重力と負の摩擦係数が織りなす非直感的な世界を体験。物理法則の反転がもたらす意外な結末とは。 |
+| EX-02 | 転がる円盤の動力学 | 重力・摩擦・慣性の三要素を操り、円盤が斜面を転がる速度とエネルギーの変化を探る実験室。位置エネルギーから運動エネルギーへの移ろいを直感的に捉えよう。 |
+| EX-03 | 放物線の軌跡を描く | 初速と角度が生み出す放物線の軌跡をシミュレーション。空気抵抗の有無で、理想的な運動と現実の運動の違いを視覚的に比較・探求できます。 |
+| EX-04 | 振り子が刻むリズムの謎 | 振り子の長さや重さを変え、周期の変動を観察するシミュレーター。振れ幅の大小にかかわらず周期がほぼ一定に保たれる『等時性』の不思議を、その目で確かめよう。 |
+| EX-05 | クーロン力で動く電子 | 電荷間に働くクーロン力をシミュレーション。電子が正電荷に引き寄せられる様子や、負電荷に反発される様子を視覚的に観察できます。 |
+| EX-06 | 重力と自由落下 | 異なる質量の物体が、空気抵抗の有無によってどのように落下するかをシミュレーション。重力の本質と物体の運動法則を探求します。 |
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 技術スタック
+- Next.js 16 / React 19 / TypeScript 5.9
+- Matter.js での 2D 剛体シミュレーション（`lib/useMatterCanvas.ts` で共通化）
+- Tailwind CSS v4 + 独自 UI コンポーネント (`components/ui`, `components/physics`)
+- Biome による lint / format
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## ディレクトリ構成メモ
+- `app/page.tsx` : Hero + 実験一覧のトップページ。
+- `app/*/lab.config.ts` : ラボのメタ情報。`lib/labs.ts` が読み込み、トップで一覧表示。
+- `app/rolling-material` / `app/bowling` : 各ラボページとシミュレーションロジック。
+- `components/physics` : キャンバスの枠やパラメータボタンなど共通 UI。
+- `lib/useMatterCanvas.ts` : Matter.Engine と canvas を初期化するカスタムフック。
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## セットアップと実行
+1. 依存関係をインストール: `npm install`
+2. 開発サーバーを起動: `npm run dev` (既定で http://localhost:3000)
+3. Lint / format: `npm run lint`, `npm run lint:fix`, `npm run format`
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Node.js 18.18 以降の環境を想定しています。Matter.js のパラメータを変更した際はホットリロードで即座に挙動を確認できます。
 
-## Learn More
+## 新しいラボを追加したい場合
+1. `app/` 配下に新しいディレクトリを作成し、`page.tsx` と `lab.config.ts` を用意します。
+2. シミュレーション専用のコンポーネントを `components/physics` や `lib/` 内のユーティリティを活用して実装します。
+3. `lab.config.ts` に slug / code / title / description / tags / accent / status / order を設定するとトップページに自動で反映されます。
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+直感的な操作で物理の“驚き”を共有するデジタル実験室としてご活用ください。

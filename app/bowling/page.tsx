@@ -1,9 +1,9 @@
-import RollingMaterial from "./components/RollingMaterial";
+import AntiGravity from "./components/Antigravity";
 import labConfig from "./lab.config"; // lab.configをインポート
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 relative overflow-hidden">
+    <main className="min-h-screen bg-linear-to-br from-slate-950 via-slate-900 to-slate-950 relative overflow-hidden">
       {/* Background Effects */}
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(59,130,246,0.15),transparent_50%)]" />
@@ -11,7 +11,7 @@ export default function Home() {
       </div>
 
       <div className="relative z-10">
-        <RollingMaterial
+        <AntiGravity
           title={labConfig.title} // labConfigからタイトルを取得
           description={labConfig.description} // labConfigからdescriptionを取得
           explanation={labConfig.explanation} // labConfigからexplanationを取得
