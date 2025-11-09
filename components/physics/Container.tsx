@@ -60,8 +60,6 @@ export const PhysicsContainer: React.FC<{
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-2xl">
-              {" "}
-              {/* max-w-2xlに変更 */}
               <DialogHeader>
                 <DialogTitle>{title}</DialogTitle>
                 <DialogDescription>{description}</DialogDescription>
@@ -70,7 +68,7 @@ export const PhysicsContainer: React.FC<{
                 <Accordion type="single" collapsible className="w-full">
                   <AccordionItem value="explanation">
                     <AccordionTrigger>解説を見る</AccordionTrigger>
-                    <AccordionContent>
+                    <AccordionContent className=" max-h-[70vh] overflow-y-auto">
                       <div className="prose prose-invert max-w-none">
                         <ReactMarkdown>{explanation}</ReactMarkdown>{" "}
                         {/* ReactMarkdownを使用 */}
@@ -81,7 +79,7 @@ export const PhysicsContainer: React.FC<{
               )}
             </DialogContent>
           </Dialog>
-        </div>{" "}
+        </div>
         {/* ここで閉じる */}
         {/* Parameters Card */}
         <Card className="p-6 sticky top-6">
