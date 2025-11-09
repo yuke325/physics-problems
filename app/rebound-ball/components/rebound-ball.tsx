@@ -1,7 +1,7 @@
 "use client";
 
 import type React from "react";
-import { useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import Matter from "matter-js";
 import { PhysicsContainer } from "@/components/physics/Container";
 import { ParamsButton } from "@/components/physics/ParamsButton";
@@ -28,16 +28,20 @@ const ReboundBall: React.FC<{ title: string }> = ({ title }) => {
   const ballRef = useRef<Matter.Body | null>(null);
   const blockRef = useRef<Matter.Body | null>(null);
 
-  const { canvasRef, engineRef } = useMatterCanvas(() =>
-    reboundBallMatter({
-      groundRef,
-      leftWallRef,
-      rightWallRef,
-      ceilingRef: ceillingRef,
-      ballRef,
-      blockRef,
-    }),
+  const initializeScene = useCallback(
+    () =>
+      reboundBallMatter({
+        groundRef,
+        leftWallRef,
+        rightWallRef,
+        ceilingRef: ceillingRef,
+        ballRef,
+        blockRef,
+      }),
+    [],
   );
+
+  const { canvasRef, engineRef } = useMatterCanvas(initializeScene);
 
   const handleTry = () => {
     if (ballRef.current && engineRef.current && !isFalling) {
@@ -49,8 +53,8 @@ const ReboundBall: React.FC<{ title: string }> = ({ title }) => {
         frictionAir: 0,
       });
 
-      // ボールに右向きの初速度を与える
-      Matter.Body.setVelocity(ballRef.current, { x: 5, y: 0 });
+      // ボールに左向きの初速度を与える
+      Matter.Body.setVelocity(ballRef.current, { x: -5, y: 0 });
 
       if (rightWallRef.current) {
         Matter.Body.set(rightWallRef.current, {
@@ -138,7 +142,7 @@ const ReboundBall: React.FC<{ title: string }> = ({ title }) => {
           <h3 className="text-sm font-semibold mb-2">反発係数</h3>
           <div className="flex gap-2">
             <ParamsButton
-              label="0.2"
+              label="-0.2"
               onClick={() => setRestitutionMode("-0.2")}
               isSelected={restitutionMode === "-0.2"}
               disabled={isFalling}

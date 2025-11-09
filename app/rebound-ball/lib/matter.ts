@@ -72,7 +72,7 @@ export const reboundBallMatter = ({
   blockRef.current = block;
 
   // ボール
-  const ball = Matter.Bodies.circle(275, 500, 20, {
+  const ball = Matter.Bodies.circle(450, 500, 20, {
     restitution: 1.2,
     friction: 0,
     frictionAir: 0,
