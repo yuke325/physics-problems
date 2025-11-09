@@ -1,4 +1,4 @@
-import AntiGravity from "./components/Antigravity";
+import CoulombForce from "./components/CoulombForce";
 import labConfig from "./lab.config"; // lab.configをインポート
 
 export default function Home() {
@@ -7,11 +7,11 @@ export default function Home() {
       {/* Background Effects */}
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(59,130,246,0.15),transparent_50%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,rgba(139,92,246,0.15),transparent_50%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,rgba(99,102,241,0.15),transparent_50%)]" />
       </div>
 
       <div className="relative z-10">
-        <AntiGravity
+        <CoulombForce
           title={labConfig.title} // labConfigからタイトルを取得
           description={labConfig.description} // labConfigからdescriptionを取得
           explanation={labConfig.explanation} // labConfigからexplanationを取得

@@ -8,7 +8,31 @@ type ExperimentsSectionProps = {
 };
 
 export function ExperimentsSection({ labs }: ExperimentsSectionProps) {
-  const featuredLab = labs[0];
+  const labLength = labs.length;
+  if (labLength === 0) {
+    return (
+      <section id="explore" className="space-y-8">
+        <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+          <div className="space-y-3">
+            <div className="inline-flex items-center gap-2">
+              <div className="h-1 w-8 rounded-full bg-gradient-to-r from-cyan-500 to-blue-500" />
+              <p className="text-xs uppercase tracking-[0.35em] text-slate-400 font-semibold">
+                Lab Archive
+              </p>
+            </div>
+            <h2 className="text-3xl md:text-4xl font-bold text-white">
+              公開中の実験室
+            </h2>
+            <p className="mt-3 text-sm text-slate-300 max-w-2xl leading-relaxed">
+              現在、公開中の実験室はありません。近日中に新しい実験室が追加される予定ですので、お楽しみに！
+            </p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+  const randomIndex = Math.floor(Math.random() * labLength);
+  const featuredLab = labs[randomIndex];
 
   return (
     <section id="explore" className="space-y-8">

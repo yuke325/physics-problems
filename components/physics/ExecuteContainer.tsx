@@ -6,7 +6,8 @@ export const ExecuteContainer: React.FC<{
   onTry: () => void;
   onReset: () => void;
   isFalling: boolean;
-}> = ({ onTry, onReset, isFalling }) => {
+  tryLabel?: string;
+}> = ({ onTry, onReset, isFalling, tryLabel }) => {
   return (
     <div className="flex flex-col gap-4 w-full">
       <StatusIndicator
@@ -23,7 +24,7 @@ export const ExecuteContainer: React.FC<{
           className="group w-full"
         >
           <PlayCircle className="w-5 h-5 transition-transform group-hover:scale-110" />
-          Try！
+          {tryLabel || "Try！"}
         </Button>
         <Button
           type="button"

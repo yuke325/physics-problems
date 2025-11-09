@@ -11,7 +11,12 @@ import { antigravityMatter } from "../lib/matter";
 type GravityMode = "-" | "0" | "+";
 type FrictionMode = "-" | "0" | "+";
 
-const AntiGravity: React.FC<{ title: string }> = ({ title }) => {
+const AntiGravity: React.FC<{
+  title: string;
+  description: string; // 追加
+  explanation?: string; // 追加
+}> = ({ title, description, explanation }) => {
+  // propsに追加
   const [isFalling, setIsFalling] = useState(false);
   const [gravityMode, setGravityMode] = useState<GravityMode>("0");
   const [frictionMode, setFrictionMode] = useState<FrictionMode>("0");
@@ -32,7 +37,10 @@ const AntiGravity: React.FC<{ title: string }> = ({ title }) => {
     [],
   );
 
-  const { canvasRef, engineRef } = useMatterCanvas(initializeScene);
+  const { canvasRef, engineRef } = useMatterCanvas(initializeScene, {
+    width: 1200,
+    height: 800,
+  });
 
   const handleTry = () => {
     if (boxRef.current && engineRef.current && !isFalling) {
@@ -101,6 +109,8 @@ const AntiGravity: React.FC<{ title: string }> = ({ title }) => {
   return (
     <PhysicsContainer
       title={title}
+      description={description} // 追加
+      explanation={explanation} // 追加
       onTry={handleTry}
       onReset={handleReset}
       isFalling={isFalling}
