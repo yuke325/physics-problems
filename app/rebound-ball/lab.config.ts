@@ -1,14 +1,14 @@
 import type { LabConfig } from "@/lib/labs";
 
 export const labConfig: LabConfig = {
-  code: "EX-02",
+  code: "EX-07",
   title: "反発係数と重力のシミュレーション",
   description:
     "ボールが壁や天井に衝突する際の反発係数と重力の関係を探求。反発係数が1を超えるとエネルギーが増幅される不思議な世界を体験できます。",
   tags: ["反発係数", "重力", "衝突", "エネルギー"] as const,
   accent: "from-orange-500/30 via-yellow-500/10 to-transparent",
   status: "体験可能",
-  order: 2,
+  order: 7,
   explanation: `
 ## 反発係数と重力のシミュレーション解説
 
