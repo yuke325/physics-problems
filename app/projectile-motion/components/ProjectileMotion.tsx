@@ -1,18 +1,18 @@
 "use client";
 
 import Matter from "matter-js";
-import type React from "react";
 import { useCallback, useRef, useState } from "react";
 import { PhysicsContainer } from "@/components/physics/Container";
 import { ParamsButton } from "@/components/physics/ParamsButton";
+import type { CanvasItemInfo } from "@/lib/types";
 import { useMatterCanvas } from "@/lib/useMatterCanvas";
 import { fireBall, projectileMotionMatter } from "../lib/matter";
 
-const ProjectileMotion: React.FC<{
-  title: string;
-  description: string; // 追加
-  explanation?: string; // 追加
-}> = ({ title, description, explanation }) => {
+const ProjectileMotion = ({
+  title,
+  description,
+  explanation,
+}: CanvasItemInfo) => {
   // propsに追加
   const [isFired, setIsFired] = useState(false);
   const [angle, setAngle] = useState(45); // 初期角度 45度

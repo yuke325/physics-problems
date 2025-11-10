@@ -1,10 +1,10 @@
 "use client";
 
 import Matter from "matter-js";
-import type React from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { PhysicsContainer } from "@/components/physics/Container";
 import { ParamsButton } from "@/components/physics/ParamsButton";
+import type { CanvasItemInfo } from "@/lib/types";
 import { useMatterCanvas } from "@/lib/useMatterCanvas";
 import {
   applyCoulombForce,
@@ -12,11 +12,7 @@ import {
   resetElectrons,
 } from "../lib/matter";
 
-const CoulombForce: React.FC<{
-  title: string;
-  description: string; // 追加
-  explanation?: string; // 追加
-}> = ({ title, description, explanation }) => {
+const CoulombForce = ({ title, description, explanation }: CanvasItemInfo) => {
   // propsに追加
   const [isSelected, setIsSelected] = useState(false);
   const [chargeType, setChargeType] = useState<

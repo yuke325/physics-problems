@@ -1,30 +1,13 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
+import type { LabConfig, LabSummary } from "./types";
 
 const CONFIG_MODULE_BASENAME = "lab.config";
 
-export type LabSummary = {
-  slug: string;
-  code: string;
-  title: string;
-  description: string;
-  tags: readonly string[];
-  accent: string;
-  status: string;
-  order: number;
-  explanation?: string; // 追加
-};
-
-export type LabConfig = Partial<Omit<LabSummary, "slug" | "order">> & {
-  slug?: string;
-  order?: number;
-  explanation?: string; // 追加
-};
-
-type LabConfigModule = {
+interface LabConfigModule {
   labConfig?: LabConfig;
   default?: LabConfig;
-};
+}
 
 export async function getLabSummaries(): Promise<readonly LabSummary[]> {
   const appDir = path.join(process.cwd(), "app");
@@ -40,16 +23,20 @@ export async function getLabSummaries(): Promise<readonly LabSummary[]> {
       const config = await loadLabConfig(entry.name);
       if (!config) return;
 
+      //  NOTE: codeとorderは自動で決めれるようにしてもいいかも
+      //  code: `EX-$(order)`
+      //  みたいな
       labs.push({
-        slug: config.slug ?? `/${entry.name}`,
-        code: config.code ?? entry.name.toUpperCase(),
-        title: config.title ?? entry.name,
-        description: config.description ?? "",
-        tags: config.tags ?? [],
+        slug: `/${entry.name}`,
+        code: config.code,
+        title: config.title,
+        description: config.description,
+        explanation: config.explanation,
+        tags: config.tags,
+        order: config.order,
         accent:
           config.accent ?? "from-slate-500/20 via-slate-700/10 to-transparent",
         status: config.status ?? "準備中",
-        order: config.order ?? Number.MAX_SAFE_INTEGER,
       });
     }),
   );
