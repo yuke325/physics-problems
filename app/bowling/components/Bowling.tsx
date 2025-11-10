@@ -1,22 +1,17 @@
 "use client";
 
 import Matter from "matter-js";
-import type React from "react";
 import { useCallback, useRef, useState } from "react";
 import { PhysicsContainer } from "@/components/physics/Container";
 import { ParamsButton } from "@/components/physics/ParamsButton";
+import type { CanvasItemInfo } from "@/lib/types";
 import { useMatterCanvas } from "@/lib/useMatterCanvas";
 import { antigravityMatter } from "../lib/matter";
 
 type GravityMode = "-" | "0" | "+";
 type FrictionMode = "-" | "0" | "+";
 
-const Bowling: React.FC<{
-  title: string;
-  description: string; // 追加
-  explanation?: string; // 追加
-}> = ({ title, description, explanation }) => {
-  // propsに追加
+const Bowling = ({ title, description, explanation }: CanvasItemInfo) => {
   const [isFalling, setIsFalling] = useState(false);
   const [gravityMode, setGravityMode] = useState<GravityMode>("0");
   const [frictionMode, setFrictionMode] = useState<FrictionMode>("0");

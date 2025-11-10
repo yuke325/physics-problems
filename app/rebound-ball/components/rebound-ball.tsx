@@ -1,10 +1,10 @@
 "use client";
 
 import Matter from "matter-js";
-import type React from "react";
 import { useCallback, useRef, useState } from "react";
 import { PhysicsContainer } from "@/components/physics/Container";
 import { ParamsButton } from "@/components/physics/ParamsButton";
+import type { CanvasItemInfo } from "@/lib/types";
 import { useMatterCanvas } from "@/lib/useMatterCanvas";
 import {
   type GravityMode,
@@ -16,11 +16,7 @@ import {
 } from "../lib/constants";
 import { reboundBallMatter } from "../lib/matter";
 
-const ReboundBall: React.FC<{
-  title: string;
-  description: string;
-  explanation?: string;
-}> = ({ title, description, explanation }) => {
+const ReboundBall = ({ title, description, explanation }: CanvasItemInfo) => {
   const [isFalling, setIsFalling] = useState(false);
   const [gravityMode, setGravityMode] = useState<GravityMode>("0");
   const [restitutionMode, setRestitutionMode] =

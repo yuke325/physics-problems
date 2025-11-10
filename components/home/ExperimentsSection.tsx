@@ -1,11 +1,11 @@
 import { ArrowRight, Star, Zap } from "lucide-react";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
-import type { LabSummary } from "@/lib/labs";
+import type { LabSummary } from "@/lib/types";
 
-type ExperimentsSectionProps = {
+interface ExperimentsSectionProps {
   labs: readonly LabSummary[];
-};
+}
 
 export function ExperimentsSection({ labs }: ExperimentsSectionProps) {
   const labLength = labs.length;

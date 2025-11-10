@@ -1,18 +1,14 @@
 "use client";
 
 import Matter from "matter-js";
-import type React from "react";
 import { useCallback, useRef, useState } from "react";
 import { PhysicsContainer } from "@/components/physics/Container";
 import { ParamsButton } from "@/components/physics/ParamsButton";
+import type { CanvasItemInfo } from "@/lib/types";
 import { useMatterCanvas } from "@/lib/useMatterCanvas";
 import { dropBalls, freeFallMatter } from "../lib/matter";
 
-const FreeFall: React.FC<{
-  title: string;
-  description: string; // 追加
-  explanation?: string; // 追加
-}> = ({ title, description, explanation }) => {
+const FreeFall = ({ title, description, explanation }: CanvasItemInfo) => {
   // propsに追加
   const [isDropped, setIsDropped] = useState(false);
   const [airResistance, setAirResistance] = useState(false); // 空気抵抗
