@@ -1,9 +1,9 @@
 "use client";
 
 import Matter from "matter-js";
-import type React from "react";
 import { useCallback, useRef, useState } from "react";
 import { PhysicsContainer } from "@/components/physics/Container";
+import type { CanvasItemInfo } from "@/lib/types";
 import { useMatterCanvas } from "@/lib/useMatterCanvas";
 import {
   initializePendulumWave,
@@ -11,11 +11,11 @@ import {
   startPendulumWave,
 } from "../lib/matter";
 
-const PendulumMotion: React.FC<{
-  title: string;
-  description: string; // 追加
-  explanation?: string; // 追加
-}> = ({ title, description, explanation }) => {
+const PendulumMotion = ({
+  title,
+  description,
+  explanation,
+}: CanvasItemInfo) => {
   // propsに追加
   const [isSimulating, setIsSimulating] = useState(false);
   const [numPendulums, setNumPendulums] = useState(15); // 振り子の数
