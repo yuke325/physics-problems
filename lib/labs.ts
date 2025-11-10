@@ -15,7 +15,9 @@ export type LabSummary = {
   explanation?: string; // 追加
 };
 
-export type LabConfig = Partial<Omit<LabSummary, "slug" | "order" | "title" | "description" | "explanation">> & {
+export type LabConfig = Partial<
+  Omit<LabSummary, "slug" | "order" | "title" | "description" | "explanation">
+> & {
   slug?: string;
   order?: number;
   title: string;
