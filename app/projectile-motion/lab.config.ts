@@ -1,4 +1,4 @@
-import type { LabConfig } from "@/lib/labs";
+import type { LabConfig } from "@/lib/types";
 
 export const labConfig: LabConfig = {
   code: "EX-03",
