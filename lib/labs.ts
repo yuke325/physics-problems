@@ -15,10 +15,12 @@ export type LabSummary = {
   explanation?: string; // 追加
 };
 
-export type LabConfig = Partial<Omit<LabSummary, "slug" | "order">> & {
+export type LabConfig = Partial<Omit<LabSummary, "slug" | "order" | "title" | "description" | "explanation">> & {
   slug?: string;
   order?: number;
-  explanation?: string; // 追加
+  title: string;
+  description: string;
+  explanation: string;
 };
 
 type LabConfigModule = {

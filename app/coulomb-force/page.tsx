@@ -12,9 +12,9 @@ export default function Home() {
 
       <div className="relative z-10">
         <CoulombForce
-          title={labConfig.title ?? "タイトルがありません"}
-          description={labConfig.description ?? "実験の説明がありません"}
-          explanation={labConfig.explanation ?? "解説がありません"}
+          title={labConfig.title}
+          description={labConfig.description}
+          explanation={labConfig.explanation}
         />
       </div>
     </main>
